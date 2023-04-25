@@ -3,14 +3,11 @@
 This Bash script installs and configures the Cloudflare Warp client on an arm based router. The script prompts the user for an IP address and a Cloudflare Access token, then uses SSH to connect to the server and perform the installation.
 
 ## Installation:
-To install this script, simply download the setup.sh file and make it executable:
+Simply download the setup.sh file and make it executable:
 
 `curl -O https://raw.githubusercontent.com/oldstreetloft/Gli_Cloudflared/main/setup.sh`
 
 `chmod +x setup.sh`
-
-## Example:
-Here's an example of how to use this script:
 
 `$ ./setup.sh`
 
