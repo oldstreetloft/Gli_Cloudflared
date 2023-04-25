@@ -5,11 +5,18 @@ prompt_user() {
     read -p "Enter CFD Token: " token
 }
 
+# Initiate SSH Connection
+
 prompt_user
 ssh root@$ip_address << ENDSSH
+
+# Download client binary.
+
 curl -O -L https://github.com/cloudflare/cloudflared/releases/download/2023.4.2/cloudflared-linux-arm
 chmod +x cloudflared-linux-arm
 mv cloudflared-linux-arm /usr/bin/cloudflared
+
+# Generate init config.
 
 cat > /etc/init.d/cloudflared << EOF
 #!/bin/sh /etc/rc.common
@@ -44,13 +51,21 @@ stop_service() {
 }
 EOF
 
+# Start cloudflared.
+
 chmod +x /etc/init.d/cloudflared
 /etc/init.d/cloudflared enable
 /etc/init.d/cloudflared start
 
-# Check if cloudflared is running.
+# Check if cloudflared is running and indicate status to user.
+
+printf '\ncloudflared is '
+/etc/init.d/cloudflared status
+
 if logread | grep cloudflared > /dev/null
-then printf '\nSUCCESS: INSTALL COMPLETED.\nSet split tunnel in Cloudflare zero trust portal under settings -> warp app.\n\n'
-else printf '\nERROR: INSTALL FAILED!\n\n'
+then
+    printf '\nSUCCESS: INSTALL COMPLETED.\nSet split tunnel in Cloudflare zero trust portal under settings -> warp app.\n\n'
+else
+    printf '\nERROR: INSTALL FAILED!\n\n'
 fi
 ENDSSH
