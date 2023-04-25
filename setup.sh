@@ -47,5 +47,7 @@ EOF
 chmod +x /etc/init.d/cloudflared
 /etc/init.d/cloudflared enable
 /etc/init.d/cloudflared start
-echo 'Set split tunnel in Cloudflare zero trust portal under settings -> warp app'
+
+# Checking for a running cloudflared.
+if logread | grep cloudflared > /dev/null ; then echo "SUCCESS: INSTALL COMPLETED. Set split tunnel in Cloudflare zero trust portal under settings -> warp app" ; else echo "ERROR: INSTALL FAILED" ; fi
 ENDSSH
