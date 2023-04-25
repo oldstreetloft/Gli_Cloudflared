@@ -1,7 +1,7 @@
 #!/bin/bash
 
 prompt_user() {
-    read -p "Enter the IP address: " ip_address
+    read -p "Enter IP address: " ip_address
     read -p "Enter CFD Token: " token
 }
 
@@ -48,6 +48,8 @@ chmod +x /etc/init.d/cloudflared
 /etc/init.d/cloudflared enable
 /etc/init.d/cloudflared start
 
-# Checking for a running cloudflared.
+# Check if cloudflared is running.
+echo
 if logread | grep cloudflared > /dev/null ; then echo "SUCCESS: INSTALL COMPLETED. Set split tunnel in Cloudflare zero trust portal under settings -> warp app" ; else echo "ERROR: INSTALL FAILED" ; fi
+echo
 ENDSSH
