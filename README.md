@@ -5,6 +5,7 @@ This Bash script installs and configures the Cloudflare Warp client on an arm ba
 To install this script, simply download the setup.sh file and make it executable:
 
 curl -O https://github.com/oldstreetloft/Gli_Cloudflared/blob/main/setup.sh
+
 chmod +x setup.sh
 
 # Example:
