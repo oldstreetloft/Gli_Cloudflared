@@ -50,6 +50,6 @@ chmod +x /etc/init.d/cloudflared
 
 # Check if cloudflared is running.
 echo
-if logread | grep cloudflared > /dev/null ; then echo "SUCCESS: INSTALL COMPLETED. Set split tunnel in Cloudflare zero trust portal under settings -> warp app" ; else echo "ERROR: INSTALL FAILED!" ; fi
+if logread | grep cloudflared > /dev/null ; then echo 'SUCCESS: INSTALL COMPLETED. Set split tunnel in Cloudflare zero trust portal under settings -> warp app' ; else echo 'ERROR: INSTALL FAILED!' ; fi
 echo
 ENDSSH
