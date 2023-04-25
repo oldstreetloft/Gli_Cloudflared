@@ -64,7 +64,7 @@ printf '\ncloudflared is '
 
 if logread | grep cloudflared > /dev/null
 then
-    printf '\nSUCCESS: INSTALL COMPLETED.\nSet split tunnel in Cloudflare zero trust portal under settings -> warp app.\n\n'
+    printf '\nSUCCESS: INSTALL COMPLETED.\nSet split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
 else
     printf '\nERROR: INSTALL FAILED!\n\n'
 fi
