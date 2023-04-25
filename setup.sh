@@ -28,7 +28,7 @@ boot()
 }
 
 start_service() {
-if [ \\\$("\\\${cfd_init}" enabled; printf "%u" ${?}) -eq 0 ]
+if [ \\\$("\\\${cfd_init}" enabled; printf "%u" \\\${?}) -eq 0 ]
     then
         procd_open_instance
         procd_set_param command /usr/bin/cloudflared --no-autoupdate tunnel run --token \\\${cfd_token}
