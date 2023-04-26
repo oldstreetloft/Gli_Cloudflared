@@ -61,7 +61,7 @@ chmod +x /etc/init.d/cloudflared
 
 printf '\ncloudflared is '
 /etc/init.d/cloudflared status
-
+sleep 5
 if logread | grep cloudflared > /dev/null
 then
     printf '\nSUCCESS: INSTALL COMPLETED.\nSet split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
