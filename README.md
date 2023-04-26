@@ -1,4 +1,4 @@
-# Cloudflare Warp ARM Client Setup <img src="https://user-images.githubusercontent.com/95660759/234452549-53925c8f-bc2f-4eaf-b2e1-8cf13d2adbe7.png" width="50" height="50">
+# Cloudflared ARM Client Installer <img src="https://user-images.githubusercontent.com/95660759/234452549-53925c8f-bc2f-4eaf-b2e1-8cf13d2adbe7.png" width="50" height="50">
 
 ## Description:
 This Bash script installs and configures the Cloudflare Warp client on an OpenWRT router. The script prompts the user for an IP address and a Cloudflare Access token, then it uses SSH to connect and perform the installation.
