@@ -7,7 +7,7 @@ This Bash script installs and configures the Cloudflare Warp client on an OpenWR
 Download the setup.sh file, make it executable, run it, then provide your information:
 
 ```
-curl -O https://raw.githubusercontent.com/oldstreetloft/Gli_Cloudflared/main/setup.sh
+curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main/setup.sh
 chmod +x setup.sh
 ./setup.sh
 ```
