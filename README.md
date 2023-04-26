@@ -1,7 +1,7 @@
 # Cloudflared ARM Client Installer  <img src="https://user-images.githubusercontent.com/95660759/234452549-53925c8f-bc2f-4eaf-b2e1-8cf13d2adbe7.png" width="50" height="50">
 
 ## Description:
-This Bash script installs and configures the Cloudflare Warp client on an OpenWRT router. The script prompts the user for an IP address and a Cloudflare Access token, then it uses SSH to connect and perform the installation.
+This Bash script installs and configures the Cloudflare Tunnel client on an OpenWRT router. The script prompts the user for an IP address and a Cloudflare Access token, then it uses SSH to connect and perform the installation.
 
 ## Installation:
 Download the setup.sh file, make it executable, run it, then provide your information:
@@ -19,6 +19,9 @@ Enter CFD Token: <your-access-token>
 
 Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App
 ```
+
+## About Cloudflare Tunnels
+Cloudflare Tunnel provides you with a secure way to connect your resources to Cloudflare without a publicly routable IP address. With Tunnel, you do not send traffic to an external IP — instead, a lightweight daemon in your infrastructure [(cloudflared)](https://github.com/cloudflare/cloudflared) creates outbound-only connections to Cloudflare’s global network. Cloudflare Tunnel can connect HTTP web servers, SSH servers, remote desktops, and other protocols safely to Cloudflare. This way, your origins can serve traffic through Cloudflare without being vulnerable to attacks that bypass Cloudflare.
 
 ## License:
 This script is licensed under the GPLv3 License. See the LICENSE file for more information.
