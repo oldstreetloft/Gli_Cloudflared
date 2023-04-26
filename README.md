@@ -11,7 +11,7 @@ curl -O https://raw.githubusercontent.com/oldstreetloft/Gli_Cloudflared/main/set
 ```
 chmod +x setup.sh
 ```
-$ ```./setup.sh
+```./setup.sh
 ```
 ```
 Enter the IP address: 192.168.1.1
