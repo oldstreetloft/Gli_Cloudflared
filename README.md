@@ -4,13 +4,13 @@
 This Bash script installs and configures the Cloudflare Tunnel client on an OpenWRT router. The script prompts the user for an IP address and a Cloudflare Access token, then it uses SSH to connect and perform the installation.
 
 ## Installation:
-Download the setup.sh file, make it executable, run it, then provide your information:
-
+Copy the following commands and run them on the host machine (laptop):
 ```
 curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main/setup.sh
 chmod +x setup.sh
 ./setup.sh
 ```
+## Example
 ```
 Enter the IP address: <ip_address>
 Enter CFD Token: <your-access-token>
