@@ -1,16 +1,24 @@
 #!/bin/bash
 
+# Read IP and CFD Token from user
 prompt_user() {
     read -p "Enter IP address: " ip_address
     read -p "Enter CFD Token: " token
 }
 
+# Query GH API for latest version number
+get_latest() {
+    local gh_url='https://api.github.com/repos/cloudflare/cloudflared/releases/latest'
+    latest=$(curl -sL $gh_url | grep tag_name | awk -F '"' '{print $4}')
+}
+
 # Initiate SSH Connection
 prompt_user
+get_latest
 ssh root@$ip_address << ENDSSH
 
 # Download client binary.
-curl -O -L https://github.com/cloudflare/cloudflared/releases/download/2023.4.2/cloudflared-linux-arm
+curl -O -L https://github.com/cloudflare/cloudflared/releases/download/$latest/cloudflared-linux-arm
 chmod +x cloudflared-linux-arm
 mv cloudflared-linux-arm /usr/bin/cloudflared
 
