@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Query user for info and GH API for latest version number
+# Query user for info and GH API for latest version number.
 init_vars() {
     read -p "Enter IP address: " ip_address
     read -p "Enter CFD Token: " token
@@ -8,13 +8,22 @@ init_vars() {
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
 }
 
-# Initialization
+# Initialization.
 init_vars
 
-# Begin SSH connection
+# Begin SSH connection.
 ssh root@$ip_address << ENDSSH
 
-# Download client binary
+# Check for connectivity.
+if ping -c 1 1.1.1.1 &> /dev/null
+    then
+        echo "Device is connected to the internet."
+    else
+        echo "Device is not connected to the internet."
+        exit 0
+fi
+
+# Download client binary.
 curl -O -L https://github.com/cloudflare/cloudflared/releases/download/$latest/cloudflared-linux-arm
 chmod +x cloudflared-linux-arm
 mv cloudflared-linux-arm /usr/bin/cloudflared
@@ -62,11 +71,11 @@ chmod +x /etc/init.d/cloudflared
 printf '\nCloudflared is '
 /etc/init.d/cloudflared status
 sleep 5
-if logread | grep cloudflared > /dev/null
-then
-    printf '\nSUCCESS: INSTALL COMPLETED.\n'
-    printf '\nSet split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
-else
-    printf '\nERROR: INSTALL FAILED!\n\n'
+if logread | grep cloudflared &> /dev/null
+    then
+        printf '\nSUCCESS: INSTALL COMPLETED.\n'
+        printf '\nSet split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
+    else
+        printf '\nERROR: INSTALL FAILED!\n\n'
 fi
 ENDSSH
