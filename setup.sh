@@ -12,9 +12,11 @@ get_latest() {
     latest=$(curl -sL $api_url | grep tag_name | awk -F '"' '{print $4}')
 }
 
-# Initiate SSH Connection
+# Initialize variables
 prompt_user
 get_latest
+
+# Begin SSH connection
 ssh root@$ip_address << ENDSSH
 
 # Download client binary.
