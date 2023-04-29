@@ -8,8 +8,8 @@ prompt_user() {
 
 # Query GH API for latest version number
 get_latest() {
-    local gh_url='https://api.github.com/repos/cloudflare/cloudflared/releases/latest'
-    latest=$(curl -sL $gh_url | grep tag_name | awk -F '"' '{print $4}')
+    local api_url='https://api.github.com/repos/cloudflare/cloudflared/releases/latest'
+    latest=$(curl -sL $api_url | grep tag_name | awk -F '"' '{print $4}')
 }
 
 # Initiate SSH Connection
