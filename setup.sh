@@ -14,7 +14,7 @@ init_vars
 # Begin SSH connection.
 ssh root@$ip_address << ENDSSH
 
-# Connection check.
+# Check for connection to the internet.
 if ping -c 1 1.1.1.1 &> /dev/null
     then
         echo "Device is connected to the internet."
