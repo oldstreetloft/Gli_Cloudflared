@@ -1,25 +1,20 @@
 #!/bin/bash
 
-# Read IP and CFD Token from user
-prompt_user() {
+# Query user for info and GH API for latest version number
+init_vars() {
     read -p "Enter IP address: " ip_address
     read -p "Enter CFD Token: " token
-}
-
-# Query GH API for latest version number
-get_latest() {
     local api_url='https://api.github.com/repos/cloudflare/cloudflared/releases/latest'
     latest=$(curl -sL $api_url | grep tag_name | awk -F '"' '{print $4}')
 }
 
-# Initialize variables
-prompt_user
-get_latest
+# Initialization
+init_vars
 
 # Begin SSH connection
 ssh root@$ip_address << ENDSSH
 
-# Download client binary.
+# Download client binary
 curl -O -L https://github.com/cloudflare/cloudflared/releases/download/$latest/cloudflared-linux-arm
 chmod +x cloudflared-linux-arm
 mv cloudflared-linux-arm /usr/bin/cloudflared
@@ -57,9 +52,9 @@ stop_service() {
     pidof cloudflared && kill -SIGINT \\\`pidof cloudflared\\\`
 }
 EOF
-
-# Start cloudflared.
 chmod +x /etc/init.d/cloudflared
+
+# Start and enable cloudflared service.
 /etc/init.d/cloudflared enable
 /etc/init.d/cloudflared start
 
