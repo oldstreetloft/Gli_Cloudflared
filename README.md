@@ -14,9 +14,7 @@ chmod +x setup.sh
 ```
 Enter the IP address: <ip_address>
 Enter CFD Token: <your-access-token>
-
 ...
-
 Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App
 ```
 
