@@ -33,7 +33,8 @@ test_conn() {
     fi
     if [[ $latest ]]; then
         printf "You are connected to the internet.\n"
-        printf "Latest cloudflared version: $latest\n\n"
+        printf "Latest cloudflared version: $latest\n"
+        printf "Latest GH download URL: $down_url\n\n"
     else
         printf "ERROR:\nYou are not connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n"
