@@ -12,10 +12,11 @@ init_vars() {
 conn_test() {
     if ping -c 1 $ip_address &> /dev/null
         then
-            printf "\nDevice is reachable."
             printf "\nProvided IP Address: "
             echo $ip_address
+            printf "\nDevice is reachable.\n"
         else
+            printf "\nERROR:\n"
             echo "No route to device!"
             echo "Please ensure connectivity to device and try again."
             exit 0
@@ -26,6 +27,7 @@ conn_test() {
             printf '\nGH Download URL: \n'
             echo $down_url
         else
+            printf "\nERROR:\n"
             echo "You are not connected to the internet."
             echo "Please ensure internet connectivity and try again."
             exit 0
@@ -44,6 +46,7 @@ if ping -c 1 1.1.1.1 &> /dev/null
     then
         echo "Device is connected to the internet."
     else
+        printf "\nERROR:\n"
         echo "Device is not connected to the internet."
         exit 0
 fi
