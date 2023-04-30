@@ -20,7 +20,7 @@ parse_args() {
     fi
 }
 
-# Query GH API for latest version number.
+# Query GH API for latest version number and download URL.
 parse_gitub() {
     local api_url="https://api.github.com/repos/$author/$repo/releases/latest"
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
