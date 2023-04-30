@@ -16,16 +16,16 @@ test_conn() {
         then
             printf "\nProvided IP Address: "
             echo $ip_address
-            printf "\nDevice is reachable.\n\n"
+            printf "\nDevice is reachable.\n"
         else
             printf "\nERROR:\n"
             echo "No route to device!"
             printf "Please ensure connectivity to device and try again.\n\n"
             exit 0
     fi
-    if echo $latest &> /dev/null
+    if [[ $latest ]]
         then
-            echo "You are connected to the internet."
+            printf "\nYou are connected to the internet.\n"
             printf '\nLatest cloudflared version: '
             echo $latest
             echo
