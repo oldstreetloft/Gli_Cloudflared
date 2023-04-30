@@ -53,7 +53,7 @@ else
     printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
 fi
 
-#==================== BEGIN INIT CONFIG ====================
+#-------------------- BEGIN INIT CONFIG --------------------
 cat > /etc/init.d/cloudflared << EOF
 #!/bin/sh /etc/rc.common
 
@@ -85,7 +85,7 @@ stop_service() {
     pidof cloudflared && kill -SIGINT \\\`pidof cloudflared\\\`
 }
 EOF ; chmod +x /etc/init.d/cloudflared
-#==================== END INIT CONFIG ====================
+#-------------------- END INIT CONFIG --------------------
 
 # Enable, start, and report status of service.
 /etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
