@@ -14,7 +14,7 @@ test_conn() {
         then
             printf "\nProvided IP Address: "
             echo $ip_address
-            printf "\nDevice is reachable.\n"
+            printf "\nDevice is reachable.\n\n"
         else
             printf "\nERROR:\n"
             echo "No route to device!"
