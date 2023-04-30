@@ -22,10 +22,10 @@ parse_github() {
     down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
 }
 
-# Check to see if both device and GH are reachable.
+# Check to see if both device and GH are responding.
 test_conn() {
     if ping -c 1 $ip_addr &> /dev/null ; then
-        printf "\nProvided IP Address: $ip_addr\n\nDevice is reachable.\n\n"
+        printf "\nProvided IP Address: $ip_addr\n\nDevice is responding.\n\n"
     else
         printf "\nERROR:\nNo route to device!\n"
         printf "Please ensure connectivity to device and try again.\n\n" ; exit 0
