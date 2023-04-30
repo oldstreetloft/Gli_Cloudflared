@@ -24,8 +24,8 @@ conn_test() {
     if ping -c 1 1.1.1.1 &> /dev/null
         then
             echo "You are connected to the internet."
-            printf '\nGH Download URL: \n'
-            echo $down_url
+            printf '\nLatest cloudflared version: \n'
+            echo $latest
         else
             printf "\nERROR:\n"
             echo "You are not connected to the internet."
