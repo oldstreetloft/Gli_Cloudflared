@@ -47,7 +47,7 @@ if ping -c 1 1.1.1.1 &> /dev/null
         echo "Device is connected to the internet."
     else
         printf "\nERROR:\n"
-        echo "Device is not connected to the internet."
+        printf "Device is not connected to the internet.\n\n"
         exit 0
 fi
 
