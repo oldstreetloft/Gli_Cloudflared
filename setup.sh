@@ -42,7 +42,7 @@ test_conn() {
 #==================== SSH_INSTALL ====================
 # Commands sent over SSH stdin as a heredoc.
 ssh_install() {
-ssh root@$ip_addr << ENDSSH
+ssh root@$ip_addr 2> /dev/null << ENDSSH
 
 # Download and install client binary.
 printf "Downloading cloudflared package"
