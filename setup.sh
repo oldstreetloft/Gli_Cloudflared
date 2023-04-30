@@ -19,27 +19,23 @@ init_vars() {
     parse_args $1 $2
     local api_url='https://api.github.com/repos/cloudflare/cloudflared/releases/latest'
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
+    down_url="https://github.com/cloudflare/cloudflared/releases/download/$latest/cloudflared-linux-arm"
 }
 
 # Check to see if both device and GH are reachable.
 test_conn() {
     if ping -c 1 $ip_addr &> /dev/null ; then
-        printf "\nProvided IP Address: "
-        echo $ip_addr ; echo
-        printf "Device is reachable.\n\n"
+        printf "\nProvided IP Address: $ip_addr\nDevice is reachable.\n\n"
     else
-        printf "\nERROR:\n"
-        printf "No route to device!\n"
+        printf "\nERROR:\nNo route to device!\n"
         printf "Please ensure connectivity to device and try again.\n\n"
         exit 0
     fi
     if [[ $latest ]]; then
         printf "You are connected to the internet.\n"
-        printf '\nLatest cloudflared version: '
-        echo $latest ; echo
+        printf "Latest cloudflared version: $latest\n\n"
     else
-        printf "ERROR:\n"
-        printf "You are not connected to the internet.\n"
+        printf "ERROR:\nYou are not connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n"
         exit 0
     fi
@@ -58,10 +54,9 @@ else
     exit 0
 fi
 
-# Download client binary.
-curl -O -L https://github.com/cloudflare/cloudflared/releases/download/$latest/cloudflared-linux-arm
-chmod +x cloudflared-linux-arm
-mv cloudflared-linux-arm /usr/bin/cloudflared
+# Download and install client binary.
+curl -O -L $down_url
+chmod +x cloudflared-linux-arm ; mv cloudflared-linux-arm /usr/bin/cloudflared
 
 # Generate init config.
 cat > /etc/init.d/cloudflared << EOF
@@ -102,8 +97,7 @@ chmod +x /etc/init.d/cloudflared
 /etc/init.d/cloudflared start
 
 # Check if cloudflared is running and indicate status to user.
-printf '\nCloudflared is '
-/etc/init.d/cloudflared status
+printf '\nCloudflared is ' ; /etc/init.d/cloudflared status
 
 # Verifying that cloudflare is generating log data.
 sleep 5
