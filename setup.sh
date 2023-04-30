@@ -25,18 +25,18 @@ init_vars() {
 # Check to see if both device and GH are reachable.
 test_conn() {
     if ping -c 1 $ip_addr &> /dev/null ; then
-        printf "\nProvided IP Address: $ip_addr\nDevice is reachable.\n\n"
+        printf "\nProvided IP Address: $ip_addr\n\nDevice is reachable.\n\n"
     else
         printf "\nERROR:\nNo route to device!\n"
         printf "Please ensure connectivity to device and try again.\n\n"
         exit 0
     fi
     if [[ $latest ]]; then
-        printf "You are connected to the internet.\n"
-        printf "Latest cloudflared version: $latest\n"
+        printf "You are connected to the internet.\n\n"
+        printf "Latest cloudflared version: $latest\n\n"
         printf "Latest GH download URL: \n$down_url\n\n"
     else
-        printf "ERROR:\nYou are not connected to the internet.\n"
+        printf "\nERROR:\nYou are not connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n"
         exit 0
     fi
@@ -48,7 +48,7 @@ ssh root@$ip_addr << ENDSSH
 
 # Check for connection to the internet.
 if ping -c 1 1.1.1.1 &> /dev/null; then
-    printf "\nDevice is connected to the internet.\n"
+    printf "\nDevice is connected to the internet.\n\n"
 else
     printf "\nERROR:\n"
     printf "Device is not connected to the internet.\n\n"
@@ -103,8 +103,8 @@ printf '\nCloudflared is ' ; /etc/init.d/cloudflared status
 # Verifying that cloudflare is generating log data.
 sleep 5
 if logread | grep cloudflared &> /dev/null; then
-    printf '\nSUCCESS: INSTALL COMPLETED.\n'
-    printf '\nSet split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
+    printf '\nSUCCESS: INSTALL COMPLETED.\n\n'
+    printf 'Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
 else
     printf '\nERROR: INSTALL FAILED!\n\n'
 fi
