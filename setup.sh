@@ -63,8 +63,7 @@ STOP=01
 cfd_init="/etc/init.d/cloudflared"
 cfd_token="$token"
 
-boot()
-{
+boot() {
     ubus -t 30 wait_for network.interface network.loopback 2>/dev/null
     rc_procd start_service
 }
