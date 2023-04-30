@@ -16,11 +16,10 @@ parse_args() {
 
 # Query GH API for latest version number and download URL.
 parse_github() {
-    local author='cloudflare'
-    local repo='cloudflared'
-    local api_url="https://api.github.com/repos/$author/$repo/releases/latest"
+    local auth_repo='cloudflare/cloudflared'
+    local api_url="https://api.github.com/repos/$auth_repo/releases/latest"
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
-    down_url="https://github.com/$author/$repo/releases/download/$latest/cloudflared-linux-arm"
+    down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
 }
 
 # Check to see if both device and GH are reachable.
