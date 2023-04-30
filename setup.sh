@@ -45,6 +45,9 @@ test_conn() {
     fi
 }
 
+#####################
+# Begin SSH session #
+#####################
 # Commands sent over SSH stdin as a heredoc.
 ssh_install() {
 ssh root@$ip_addr << ENDSSH
@@ -59,7 +62,7 @@ else
 fi
 
 #####################
-# Begin init config.#
+# Begin init config #
 #####################
 cat > /etc/init.d/cloudflared << EOF
 #!/bin/sh /etc/rc.common
@@ -93,7 +96,7 @@ stop_service() {
 }
 EOF ; chmod +x /etc/init.d/cloudflared
 ###################
-# END init config.#
+# END init config #
 ###################
 
 # Enable, start, and report status of service.
@@ -110,6 +113,9 @@ else
 fi
 ENDSSH
 }
+###################
+# End SSH session #
+###################
 
 # Main.
 init_vars
