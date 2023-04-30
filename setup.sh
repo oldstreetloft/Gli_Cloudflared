@@ -14,9 +14,8 @@ parse_args() {
     fi
 }
 
-# Query user for info and GH API for latest version number.
-init_vars() {
-    parse_args $1 $2
+# Query GH API for latest version number.
+parse_gitub() {
     local api_url='https://api.github.com/repos/cloudflare/cloudflared/releases/latest'
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
     down_url="https://github.com/cloudflare/cloudflared/releases/download/$latest/cloudflared-linux-arm"
@@ -44,19 +43,18 @@ test_conn() {
 ssh_install() {
 ssh root@$ip_addr << ENDSSH
 
-# Check for connection to the internet.
-if ping -c 1 1.1.1.1 &> /dev/null; then
-    printf "\nDevice is connected to the internet.\n\n"
+# Download and install client binary.
+printf "Downloading cloudflared package"
+if curl -O -L $down_url ; then
+    chmod +x cloudflared-linux-arm ; mv cloudflared-linux-arm /usr/bin/cloudflared
 else
-    printf "\nERROR:\n"
-    printf "Device is not connected to the internet.\n\n" ; exit 0
+    printf "\nERROR:\nDevice is NOT connected to the internet.\n"
+    printf "Please ensure connectivity and try again.\n\n" ; exit 0
 fi
 
-# Download and install client binary.
-curl -O -L $down_url
-chmod +x cloudflared-linux-arm ; mv cloudflared-linux-arm /usr/bin/cloudflared
-
-# Generate init config.
+#####################
+# Begin init config.#
+#####################
 cat > /etc/init.d/cloudflared << EOF
 #!/bin/sh /etc/rc.common
 
@@ -87,8 +85,10 @@ start_service() {
 stop_service() {
     pidof cloudflared && kill -SIGINT \\\`pidof cloudflared\\\`
 }
-EOF
-chmod +x /etc/init.d/cloudflared
+EOF ; chmod +x /etc/init.d/cloudflared
+###################
+# END init config.#
+###################
 
 # Enable and start cloudflared service.
 /etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
@@ -102,12 +102,13 @@ if logread | grep cloudflared &> /dev/null; then
     printf '\nSUCCESS: INSTALL COMPLETED.\n\n'
     printf 'Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
 else
-    printf '\nERROR: INSTALL FAILED!\n\n'
+    printf '\nERROR: INSTALL FAILED!\n\n' ; exit 0
 fi
 ENDSSH
 }
 
 # Main.
-init_vars $1 $2
+parse_args $1 $2
+parse_github
 test_conn
 ssh_install
