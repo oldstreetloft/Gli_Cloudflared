@@ -12,28 +12,26 @@ init_vars() {
 
 # Check to see if both device and GH are reachable.
 test_conn() {
-    if ping -c 1 $ip_address &> /dev/null
-        then
-            printf "\nProvided IP Address: "
-            echo $ip_address
-            printf "\nDevice is reachable.\n"
-        else
-            printf "\nERROR:\n"
-            echo "No route to device!"
-            printf "Please ensure connectivity to device and try again.\n\n"
-            exit 0
+    if ping -c 1 $ip_address &> /dev/null; then
+        printf "\nProvided IP Address: "
+        echo $ip_address
+        printf "\nDevice is reachable.\n"
+    else
+        printf "\nERROR:\n"
+        echo "No route to device!"
+        printf "Please ensure connectivity to device and try again.\n\n"
+        exit 0
     fi
-    if [[ $latest ]]
-        then
-            printf "\nYou are connected to the internet.\n"
-            printf '\nLatest cloudflared version: '
-            echo $latest
-            echo
-        else
-            printf "\nERROR:\n"
-            echo "You are not connected to the internet."
-            printf "Please ensure internet connectivity and try again.\n\n"
-            exit 0
+    if [[ $latest ]]; then
+        printf "\nYou are connected to the internet.\n"
+        printf '\nLatest cloudflared version: '
+        echo $latest
+        echo
+    else
+        printf "\nERROR:\n"
+        echo "You are not connected to the internet."
+        printf "Please ensure internet connectivity and try again.\n\n"
+        exit 0
     fi
 }
 
@@ -45,13 +43,12 @@ test_conn
 ssh root@$ip_address << ENDSSH
 
 # Check for connection to the internet.
-if ping -c 1 1.1.1.1 &> /dev/null
-    then
-        echo "Device is connected to the internet."
-    else
-        printf "\nERROR:\n"
-        printf "Device is not connected to the internet.\n\n"
-        exit 0
+if ping -c 1 1.1.1.1 &> /dev/null; then
+    echo "Device is connected to the internet."
+else
+    printf "\nERROR:\n"
+    printf "Device is not connected to the internet.\n\n"
+    exit 0
 fi
 
 # Download client binary.
@@ -104,11 +101,10 @@ printf '\nCloudflared is '
 
 # Verifying that cloudflare is generating log data.
 sleep 5
-if logread | grep cloudflared &> /dev/null
-    then
-        printf '\nSUCCESS: INSTALL COMPLETED.\n'
-        printf '\nSet split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
-    else
-        printf '\nERROR: INSTALL FAILED!\n\n'
+if logread | grep cloudflared &> /dev/null; then
+    printf '\nSUCCESS: INSTALL COMPLETED.\n'
+    printf '\nSet split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
+else
+    printf '\nERROR: INSTALL FAILED!\n\n'
 fi
 ENDSSH
