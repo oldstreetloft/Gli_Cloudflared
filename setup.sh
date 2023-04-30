@@ -45,8 +45,8 @@ ssh root@$ip_addr << ENDSSH
 
 # Download and install client binary.
 printf "Downloading cloudflared package"
-if curl -O -L $down_url ; then
-    chmod +x cloudflared-linux-arm ; mv cloudflared-linux-arm /usr/bin/cloudflared
+if curl -L $down_url -o cloudflared ; then
+    chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared
 else
     printf "\nERROR:\nDevice is NOT connected to the internet.\n"
     printf "Please ensure connectivity and try again.\n\n" ; exit 0
