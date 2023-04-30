@@ -96,10 +96,8 @@ EOF ; chmod +x /etc/init.d/cloudflared
 # END init config.#
 ###################
 
-# Enable and start cloudflared service.
+# Enable, start, and report status of service.
 /etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
-
-# Check if cloudflared is running and indicate status to user.
 printf '\nCloudflared is ' ; /etc/init.d/cloudflared status
 
 # Verifying that cloudflare is generating log data.
