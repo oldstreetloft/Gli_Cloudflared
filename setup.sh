@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# Accept command-line arguments or prompt user for ip and token
+# Define variables.
+init_vars() {
+    author='cloudflare'
+    repo='cloudflared'
+}
+
+# Define command-line arguments or prompt user for ip and token
 parse_args() {
     if [[ $1 ]] ; then
         ip_addr=$1
@@ -16,9 +22,9 @@ parse_args() {
 
 # Query GH API for latest version number.
 parse_gitub() {
-    local api_url='https://api.github.com/repos/cloudflare/cloudflared/releases/latest'
+    local api_url="https://api.github.com/repos/$author/$repo/releases/latest"
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
-    down_url="https://github.com/cloudflare/cloudflared/releases/download/$latest/cloudflared-linux-arm"
+    down_url="https://github.com/$author/$repo/releases/download/$latest/cloudflared-linux-arm"
 }
 
 # Check to see if both device and GH are reachable.
@@ -108,6 +114,7 @@ ENDSSH
 }
 
 # Main.
+init_vars
 parse_args $1 $2
 parse_github
 test_conn
