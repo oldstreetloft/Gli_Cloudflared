@@ -9,7 +9,7 @@ init_vars() {
 }
 
 # Check to see if both device and 1.1.1.1 are reachable.
-conn_test() {
+test_conn() {
     if ping -c 1 $ip_address &> /dev/null
         then
             printf "\nProvided IP Address: "
@@ -36,7 +36,7 @@ conn_test() {
 
 # Initialize variables and test connectivity.
 init_vars
-conn_test
+test_conn
 
 # Begin SSH connection.
 ssh root@$ip_address 2> /dev/null << ENDSSH
