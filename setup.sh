@@ -24,7 +24,7 @@ test_conn() {
     if ping -c 1 1.1.1.1 &> /dev/null
         then
             echo "You are connected to the internet."
-            printf '\nLatest cloudflared version: \n'
+            printf '\nLatest cloudflared version: '
             echo $latest
             echo
         else
@@ -40,7 +40,7 @@ init_vars
 test_conn
 
 # Begin SSH connection.
-ssh root@$ip_address 2> /dev/null << ENDSSH
+ssh root@$ip_address << ENDSSH
 
 # Check for connection to the internet.
 if ping -c 1 1.1.1.1 &> /dev/null
