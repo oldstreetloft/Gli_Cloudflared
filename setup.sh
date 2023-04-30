@@ -3,6 +3,7 @@
 # Query user for info and GH API for latest version number.
 init_vars() {
     read -p "Enter IP address: " ip_address
+    echo
     read -p "Enter CFD Token: " token
     local api_url='https://api.github.com/repos/cloudflare/cloudflared/releases/latest'
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
