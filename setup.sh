@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Define variables.
-init_vars() {
-    author='cloudflare'
-    repo='cloudflared'
-}
-
 # Define command-line arguments or prompt user for ip and token
 parse_args() {
     if [[ $1 ]] ; then
@@ -22,8 +16,10 @@ parse_args() {
 
 # Query GH API for latest version number and download URL.
 parse_github() {
+    local author='cloudflare'
+    local repo='cloudflared'
     local api_url="https://api.github.com/repos/$author/$repo/releases/latest"
-    latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
+    latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
     down_url="https://github.com/$author/$repo/releases/download/$latest/cloudflared-linux-arm"
 }
 
@@ -118,7 +114,6 @@ ENDSSH
 ###################
 
 # Main.
-init_vars
 parse_args $1 $2
 parse_github
 test_conn
