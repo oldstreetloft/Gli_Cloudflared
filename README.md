@@ -8,7 +8,6 @@ Copy the following commands, paste them into a terminal window on the local mach
 curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main/setup.sh
 chmod +x setup.sh
 ./setup.sh
-
 ```
 ## Example
 Script will run with or without command line arguments:
