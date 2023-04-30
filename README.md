@@ -1,7 +1,7 @@
 # Cloudflared ARM Client Installer  <img src="https://user-images.githubusercontent.com/95660759/234452549-53925c8f-bc2f-4eaf-b2e1-8cf13d2adbe7.png" width="50" height="50">
 
 ## Description:
-This Bash script installs and configures the Cloudflare Tunnel client on an OpenWRT router. The script prompts the user for an IP address and a Cloudflare Access token, then it uses SSH to connect and perform the installation.
+This Bash script automates the installation and configuration of Cloudflare's cloudflared client on an OpenWRT router. The script prompts the user for the device's IP address and Cloudflare Access token, checks for internet connectivity and device reachability, downloads the latest version from GitHub, generates an init config file, starts and enables the cloudflared service, and verifies that the installation was successful. The key functionality of the script is to automate the installation and configuration process, making it easier for users to set up Cloudflare Access on their devices.
 
 ## Installation:
 Copy the following commands and run them on the local machine (laptop):
