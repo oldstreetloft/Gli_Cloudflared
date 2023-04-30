@@ -106,7 +106,7 @@ fi
 ENDSSH
 }
 
-# Initialize variables and test connectivity.
+# Main.
 init_vars
 test_conn
 ssh_install
