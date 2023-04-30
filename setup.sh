@@ -1,5 +1,5 @@
 #!/bin/bash
-#-------------------- parse_args --------------------
+#==================== PARSE_ARGS ====================
 # Define command-line arguments or prompt user for ip and token
 parse_args() {
     if [[ $1 ]] ; then
@@ -13,7 +13,7 @@ parse_args() {
         echo ; read -p "Enter CFD Token: " token
     fi
 }
-#-------------------- parse_github --------------------
+#==================== PARSE_GITHUB ====================
 # Query GH API for latest version number and download URL.
 parse_github() {
     local auth_repo='cloudflare/cloudflared'
@@ -21,7 +21,7 @@ parse_github() {
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
     down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
 }
-#-------------------- test_conn --------------------
+#==================== TEST_CONN ====================
 # Check to see if both device and GH are responding.
 test_conn() {
     if ping -c 1 $ip_addr &> /dev/null ; then
@@ -39,7 +39,7 @@ test_conn() {
         printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
     fi
 }
-#-------------------- ssh_install --------------------
+#==================== SSH_INSTALL ====================
 # Commands sent over SSH stdin as a heredoc.
 ssh_install() {
 ssh root@$ip_addr << ENDSSH
@@ -53,9 +53,7 @@ else
     printf "Please ensure connectivity and try again.\n\n" ; exit 0
 fi
 
-#####################
-# Begin init config #
-#####################
+#==================== BEGIN INIT CONFIG ====================
 cat > /etc/init.d/cloudflared << EOF
 #!/bin/sh /etc/rc.common
 
@@ -87,9 +85,7 @@ stop_service() {
     pidof cloudflared && kill -SIGINT \\\`pidof cloudflared\\\`
 }
 EOF ; chmod +x /etc/init.d/cloudflared
-###################
-# END init config #
-###################
+#==================== END INIT CONFIG ====================
 
 # Enable, start, and report status of service.
 /etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
@@ -105,8 +101,7 @@ else
 fi
 ENDSSH
 }
-#-------------------- main --------------------
-# Main.
+#==================== MAIN ====================
 parse_args $1 $2
 parse_github
 test_conn
