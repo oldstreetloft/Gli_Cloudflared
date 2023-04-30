@@ -34,11 +34,8 @@ test_conn() {
     fi
 }
 
-# Initialize variables and test connectivity.
-init_vars
-test_conn
-
-# Begin SSH connection.
+# Commands sent over SSH stdin as a heredoc.
+ssh_install() {
 ssh root@$ip_address << ENDSSH
 
 # Check for connection to the internet.
@@ -107,3 +104,9 @@ else
     printf '\nERROR: INSTALL FAILED!\n\n'
 fi
 ENDSSH
+}
+
+# Initialize variables and test connectivity.
+init_vars
+test_conn
+ssh_install
