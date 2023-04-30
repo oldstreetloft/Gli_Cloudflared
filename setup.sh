@@ -2,6 +2,7 @@
 
 # Query user for info and GH API for latest version number.
 init_vars() {
+    echo
     read -p "Enter IP address: " ip_address
     echo
     read -p "Enter CFD Token: " token
