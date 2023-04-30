@@ -14,8 +14,8 @@ init_vars() {
 test_conn() {
     if ping -c 1 $ip_address &> /dev/null ; then
         printf "\nProvided IP Address: "
-        echo $ip_address
-        printf "\nDevice is reachable.\n"
+        echo $ip_address ; echo
+        printf "Device is reachable.\n"
     else
         printf "\nERROR:\n"
         printf "No route to device!\n"
@@ -23,11 +23,11 @@ test_conn() {
         exit 0
     fi
     if [[ $latest ]]; then
-        printf "\nYou are connected to the internet.\n"
+        printf "You are connected to the internet.\n"
         printf '\nLatest cloudflared version: '
         echo $latest ; echo
     else
-        printf "\nERROR:\n"
+        printf "ERROR:\n"
         printf "You are not connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n"
         exit 0
