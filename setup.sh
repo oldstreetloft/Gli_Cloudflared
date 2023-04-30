@@ -95,6 +95,8 @@ chmod +x /etc/init.d/cloudflared
 # Check if cloudflared is running and indicate status to user.
 printf '\nCloudflared is '
 /etc/init.d/cloudflared status
+
+# Verifying that cloudflare is generating log data.
 sleep 5
 if logread | grep cloudflared &> /dev/null
     then
