@@ -32,7 +32,7 @@ conn_test() {
     fi
 }
 
-# Initialization.
+# Initialize variables and test connectivity.
 init_vars
 conn_test
 
