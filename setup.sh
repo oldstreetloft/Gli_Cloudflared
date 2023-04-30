@@ -12,24 +12,23 @@ init_vars() {
 
 # Check to see if both device and GH are reachable.
 test_conn() {
-    if ping -c 1 $ip_address &> /dev/null; then
+    if ping -c 1 $ip_address &> /dev/null ; then
         printf "\nProvided IP Address: "
         echo $ip_address
         printf "\nDevice is reachable.\n"
     else
         printf "\nERROR:\n"
-        echo "No route to device!"
+        printf "No route to device!\n"
         printf "Please ensure connectivity to device and try again.\n\n"
         exit 0
     fi
     if [[ $latest ]]; then
         printf "\nYou are connected to the internet.\n"
         printf '\nLatest cloudflared version: '
-        echo $latest
-        echo
+        echo $latest ; echo
     else
         printf "\nERROR:\n"
-        echo "You are not connected to the internet."
+        printf "You are not connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n"
         exit 0
     fi
@@ -44,7 +43,7 @@ ssh root@$ip_address << ENDSSH
 
 # Check for connection to the internet.
 if ping -c 1 1.1.1.1 &> /dev/null; then
-    echo "Device is connected to the internet."
+    printf "\nDevice is connected to the internet.\n"
 else
     printf "\nERROR:\n"
     printf "Device is not connected to the internet.\n\n"
