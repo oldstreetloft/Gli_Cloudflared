@@ -21,7 +21,7 @@ parse_args() {
 }
 
 # Query GH API for latest version number and download URL.
-parse_gitub() {
+parse_github() {
     local api_url="https://api.github.com/repos/$author/$repo/releases/latest"
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
     down_url="https://github.com/$author/$repo/releases/download/$latest/cloudflared-linux-arm"
