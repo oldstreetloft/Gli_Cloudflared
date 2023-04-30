@@ -15,7 +15,9 @@ Script will run with or without command line arguments:
 ./setup.sh <ip_address> <access_token>
 ```
 ```
-Enter password:
+Enter IP address: <ip_address>
+Enter CFD Token: <access_token>
+Enter password: <password>
 ...
 Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.
 ```
