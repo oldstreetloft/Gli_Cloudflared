@@ -1,21 +1,32 @@
 #!/bin/bash
 
+# Accept command-line arguments or prompt user for ip and token
+parse_args() {
+    if [[ $1 ]] ; then
+        ip_addr=$1
+    else
+        echo ; read -p "Enter IP address: " ip_addr
+    fi
+    if [[ $2 ]] ; then
+        token=$2
+    else
+        echo ; read -p "Enter CFD Token: " token
+    fi
+}
+
 # Query user for info and GH API for latest version number.
 init_vars() {
-    echo
-    read -p "Enter IP address: " ip_address
-    echo
-    read -p "Enter CFD Token: " token
+    parse_args $1 $2
     local api_url='https://api.github.com/repos/cloudflare/cloudflared/releases/latest'
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
 }
 
 # Check to see if both device and GH are reachable.
 test_conn() {
-    if ping -c 1 $ip_address &> /dev/null ; then
+    if ping -c 1 $ip_addr &> /dev/null ; then
         printf "\nProvided IP Address: "
-        echo $ip_address ; echo
-        printf "Device is reachable.\n"
+        echo $ip_addr ; echo
+        printf "Device is reachable.\n\n"
     else
         printf "\nERROR:\n"
         printf "No route to device!\n"
@@ -36,7 +47,7 @@ test_conn() {
 
 # Commands sent over SSH stdin as a heredoc.
 ssh_install() {
-ssh root@$ip_address << ENDSSH
+ssh root@$ip_addr << ENDSSH
 
 # Check for connection to the internet.
 if ping -c 1 1.1.1.1 &> /dev/null; then
@@ -106,6 +117,6 @@ ENDSSH
 }
 
 # Main.
-init_vars
+init_vars $1 $2
 test_conn
 ssh_install
