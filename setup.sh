@@ -28,8 +28,7 @@ test_conn() {
         printf "\nProvided IP Address: $ip_addr\n\nDevice is reachable.\n\n"
     else
         printf "\nERROR:\nNo route to device!\n"
-        printf "Please ensure connectivity to device and try again.\n\n"
-        exit 0
+        printf "Please ensure connectivity to device and try again.\n\n" ; exit 0
     fi
     if [[ $latest ]]; then
         printf "You are connected to the internet.\n\n"
@@ -37,8 +36,7 @@ test_conn() {
         printf "Latest GH download URL: \n$down_url\n\n"
     else
         printf "\nERROR:\nYou are not connected to the internet.\n"
-        printf "Please ensure internet connectivity and try again.\n\n"
-        exit 0
+        printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
     fi
 }
 
@@ -51,8 +49,7 @@ if ping -c 1 1.1.1.1 &> /dev/null; then
     printf "\nDevice is connected to the internet.\n\n"
 else
     printf "\nERROR:\n"
-    printf "Device is not connected to the internet.\n\n"
-    exit 0
+    printf "Device is not connected to the internet.\n\n" ; exit 0
 fi
 
 # Download and install client binary.
@@ -93,9 +90,8 @@ stop_service() {
 EOF
 chmod +x /etc/init.d/cloudflared
 
-# Start and enable cloudflared service.
-/etc/init.d/cloudflared enable
-/etc/init.d/cloudflared start
+# Enable and start cloudflared service.
+/etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
 
 # Check if cloudflared is running and indicate status to user.
 printf '\nCloudflared is ' ; /etc/init.d/cloudflared status
