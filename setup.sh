@@ -99,7 +99,7 @@ EOF ; chmod +x /etc/init.d/cloudflared
 /etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
 printf '\nCloudflared is ' ; /etc/init.d/cloudflared status
 
-# Verifying that cloudflare is generating log data.
+# Verify that cloudflare is generating log data.
 sleep 5
 if logread | grep cloudflared &> /dev/null; then
     printf '\nSUCCESS: INSTALL COMPLETED.\n\n'
