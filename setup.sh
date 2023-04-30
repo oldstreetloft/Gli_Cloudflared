@@ -27,7 +27,7 @@ test_conn() {
     if ping -c 1 $ip_addr &> /dev/null ; then
         printf "\nProvided IP Address: $ip_addr\n\nDevice is responding.\n\n"
     else
-        printf "\nERROR:\nNo route to device!\n"
+        printf "\nERROR: No route to device!\n"
         printf "Please ensure connectivity to device and try again.\n\n" ; exit 0
     fi
     if [[ $latest ]]; then
@@ -35,7 +35,7 @@ test_conn() {
         printf "Latest cloudflared version: $latest\n\n"
         printf "Latest GH download URL: \n$down_url\n\n"
     else
-        printf "\nERROR:\nYou are not connected to the internet.\n"
+        printf "\nERROR: You are not connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
     fi
 }
@@ -49,7 +49,7 @@ printf "Downloading cloudflared package"
 if curl -L $down_url -o cloudflared ; then
     chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared
 else
-    printf "\nERROR:\nDevice is NOT connected to the internet.\n"
+    printf "\nERROR: Device is NOT connected to the internet.\n"
     printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
 fi
 
