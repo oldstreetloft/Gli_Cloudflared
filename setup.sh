@@ -40,9 +40,6 @@ test_conn() {
     fi
 }
 #-------------------- ssh_install --------------------
-#####################
-# Begin SSH session #
-#####################
 # Commands sent over SSH stdin as a heredoc.
 ssh_install() {
 ssh root@$ip_addr << ENDSSH
@@ -108,9 +105,6 @@ else
 fi
 ENDSSH
 }
-###################
-# End SSH session #
-###################
 #-------------------- main --------------------
 # Main.
 parse_args $1 $2
