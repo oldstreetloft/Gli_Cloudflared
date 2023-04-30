@@ -26,6 +26,7 @@ test_conn() {
             echo "You are connected to the internet."
             printf '\nLatest cloudflared version: \n'
             echo $latest
+            echo
         else
             printf "\nERROR:\n"
             echo "You are not connected to the internet."
