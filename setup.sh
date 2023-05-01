@@ -45,7 +45,7 @@ ssh_install() {
 ssh root@$ip_addr 2> /dev/null << ENDSSH
 
 # Download and install client binary.
-printf "Downloading cloudflared package"
+printf "\nDownloading cloudflared package.\n"
 if curl -L $down_url -o cloudflared ; then
     chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared
 else
