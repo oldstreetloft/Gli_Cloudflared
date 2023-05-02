@@ -1,18 +1,18 @@
 #!/bin/bash
 
 #==================== INITIALIZATION ====================
-# Define variables.
+# Define global variables.
 auth_repo='cloudflare/cloudflared'
 api_url="https://api.github.com/repos/$auth_repo/releases/latest"
 
 #==================== MAIN ====================
 # Main function.
 main() {
-parse_args $1 $2        # Get data from user.
-parse_github            # Find latest download URL.
-test_conn               # Exit if no connection.
-detect_os               # Dependencies for android-termux.
-ssh_install             # Install script
+    parse_args $1 $2        # Get data from user.
+    parse_github            # Find latest download URL.
+    test_conn               # Exit if no connection.
+    detect_os               # Dependencies for android-termux.
+    ssh_install             # Install script
 }
 
 #==================== PARSE_ARGS ====================
