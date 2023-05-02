@@ -84,7 +84,8 @@ start_service() {
 stop_service() {
     pidof cloudflared && kill -SIGINT \\\`pidof cloudflared\\\`
 }
-EOF ; chmod +x /etc/init.d/cloudflared
+EOF
+chmod +x /etc/init.d/cloudflared
 #-------------------- END INIT CONFIG --------------------
 
 # Enable, start, and report status of service.
