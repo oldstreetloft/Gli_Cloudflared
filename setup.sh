@@ -1,5 +1,20 @@
 #!/bin/bash
 
+#==================== INITIALIZATION ====================
+# Define variables.
+auth_repo='cloudflare/cloudflared'
+api_url="https://api.github.com/repos/$auth_repo/releases/latest"
+
+#==================== MAIN ====================
+# Main function.
+main() {
+parse_args $1 $2        # Get data from user.
+parse_github            # Find latest download URL.
+test_conn               # Exit if no connection.
+detect_os               # Dependencies for android-termux.
+ssh_install             # Install script
+}
+
 #==================== PARSE_ARGS ====================
 # Define command-line arguments or prompt user for ip and token
 parse_args() {
@@ -14,21 +29,14 @@ parse_args() {
         echo ; read -p "Enter CFD Token: " token
     fi
 }
-#==================== MAIN ====================
-main() {
-    parse_github    # Find latest download URL.
-    test_conn       # May exit if no connection.
-    detect_os       # Dependencies for android-termux.
-    ssh_install     # Install script
-}
+
 #==================== PARSE_GITHUB ====================
 # Query GH API for latest version number and download URL.
 parse_github() {
-    local auth_repo='cloudflare/cloudflared'
-    local api_url="https://api.github.com/repos/$auth_repo/releases/latest"
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
     down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
 }
+
 #==================== TEST_CONN ====================
 # Check to see if device and GH are responding.
 test_conn() {
@@ -47,6 +55,7 @@ test_conn() {
         printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
     fi
 }
+
 #==================== DETECT_OS ====================
 # Detect the OS of the host.
 detect_os() {
@@ -58,6 +67,7 @@ detect_os() {
         printf "Host OS: $target\n\n"
     fi
 }
+
 #==================== SSH_INSTALL ====================
 # Commands sent over SSH stdin as a heredoc.
 ssh_install() {
@@ -121,6 +131,6 @@ else
 fi
 ENDSSH
 }
+
 #==================== Start execution ====================
-parse_args $1 $2
-main
+main $1 $2
