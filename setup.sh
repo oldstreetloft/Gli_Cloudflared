@@ -1,12 +1,6 @@
 #!/bin/bash
 
-#==================== INITIALIZATION ====================
-# Define global variables.
-auth_repo='cloudflare/cloudflared'
-api_url="https://api.github.com/repos/$auth_repo/releases/latest"
-
-#==================== MAIN ====================
-# Main function.
+#==================== Main function ====================
 main() {
     parse_args $1 $2        # Get data from user.
     parse_github            # Find latest download URL.
@@ -15,7 +9,7 @@ main() {
     ssh_install             # Install script
 }
 
-#==================== PARSE_ARGS ====================
+#==================== Define functions ====================
 # Define command-line arguments or prompt user for ip and token
 parse_args() {
     if [[ $1 ]] ; then
@@ -30,14 +24,14 @@ parse_args() {
     fi
 }
 
-#==================== PARSE_GITHUB ====================
 # Query GH API for latest version number and download URL.
 parse_github() {
+    local auth_repo='cloudflare/cloudflared'
+    local api_url="https://api.github.com/repos/$auth_repo/releases/latest"
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
     down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
 }
 
-#==================== TEST_CONN ====================
 # Check to see if device and GH are responding.
 test_conn() {
     if ping -c 1 $ip_addr &> /dev/null ; then
@@ -56,7 +50,6 @@ test_conn() {
     fi
 }
 
-#==================== DETECT_OS ====================
 # Detect the OS of the host.
 detect_os() {
     local target=$(uname -o)
@@ -68,7 +61,7 @@ detect_os() {
     fi
 }
 
-#==================== SSH_INSTALL ====================
+#==================== Start SSH connection ====================
 # Commands sent over SSH stdin as a heredoc.
 ssh_install() {
 ssh root@$ip_addr 2> /dev/null << ENDSSH
@@ -82,7 +75,7 @@ else
     printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
 fi
 
-#-------------------- BEGIN INIT CONFIG --------------------
+#==================== Start init config ====================
 cat > /etc/init.d/cloudflared << EOF
 #!/bin/sh /etc/rc.common
 
@@ -115,7 +108,7 @@ stop_service() {
 }
 EOF
 chmod +x /etc/init.d/cloudflared
-#-------------------- END INIT CONFIG --------------------
+#==================== End init config ====================
 
 # Enable, start, and report status of service.
 /etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
