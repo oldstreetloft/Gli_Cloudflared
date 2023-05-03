@@ -24,7 +24,7 @@ parse_args() {
     fi
 }
 
-# Check to see if device and GH are responding.
+# Check to see if device and 1.1.1.1 are responding.
 test_conn() {
     if ping -c 1 $ip_addr &> /dev/null ; then
         printf "\nProvided IP Address: $ip_addr\n\nDevice is responding.\n\n"
@@ -49,7 +49,7 @@ parse_github() {
     printf "Latest cloudflared version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
 }
 
-# Detect the OS of the host.
+# Detect the OS of the host, install dependencies.
 detect_os() {
     local target=$(uname -o)
     if [ "$target" = "Android" ] ; then
