@@ -63,7 +63,7 @@ detect_os() {
 #==================== Start SSH connection ====================
 # Commands sent over SSH stdin as a heredoc.
 ssh_install() {
-ssh root@$ip_addr 2> /dev/null << ENDSSH
+ssh root@$ip_addr << ENDSSH
 
 # Download and install client binary.
 printf "\nDownloading cloudflared package.\n"
