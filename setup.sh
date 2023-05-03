@@ -3,10 +3,10 @@
 #==================== Main function ====================
 main() {
     parse_args $1 $2        # Get data from user.
-    test_conn               # Test connection.
-    parse_github            # Find latest download URL.
-    detect_os               # Dependencies for android-termux.
-    ssh_install             # Install script
+    test_conn               # Exit if no connection.
+    parse_github            # Query GH for latest download URL.
+    detect_os               # Install dependencies.
+    ssh_install             # Install script.
 }
 
 #==================== Define functions ====================
