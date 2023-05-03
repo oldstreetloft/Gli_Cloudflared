@@ -30,13 +30,13 @@ test_conn() {
         printf "\nProvided IP Address: $ip_addr\n\nDevice is responding.\n\n"
     else
         printf "\nERROR: No route to device!\n"
-        printf "Please ensure connectivity to device and try again.\n\n" ; exit 0
+        printf "Please ensure connectivity to device and try again.\n\n" ; exit 1
     fi
     if ping -c 1 1.1.1.1 &> /dev/null ; then
         printf "You are connected to the internet.\n\n"
     else
         printf "\nERROR: You are not connected to the internet.\n"
-        printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
+        printf "Please ensure internet connectivity and try again.\n\n" ; exit 1
     fi
 }
 
@@ -46,7 +46,12 @@ parse_github() {
     local api_url="https://api.github.com/repos/$auth_repo/releases/latest"
     local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
     down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
+    if [ -z "$down_url" ]; then
+        printf "ERROR: Unable to retrieve latest download URL from GitHub API.\n"
+        exit 1
+    else
     printf "Latest cloudflared version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
+    fi
 }
 
 # Detect the OS of the host, install dependencies.
@@ -71,7 +76,7 @@ if curl -L $down_url -o cloudflared ; then
     chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared ; printf "\nPackage installed.\n"
 else
     printf "\nERROR: Device is NOT connected to the internet.\n"
-    printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
+    printf "Please ensure internet connectivity and try again.\n\n" ; exit 1
 fi
 
 #==================== Start init config ====================
@@ -119,7 +124,7 @@ if logread | grep cloudflared &> /dev/null; then
     printf '\nSUCCESS: INSTALL COMPLETED.\n\n'
     printf 'Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
 else
-    printf '\nERROR: INSTALL FAILED!\n\n' ; exit 0
+    printf '\nERROR: INSTALL FAILED!\n\n' ; exit 1
 fi
 ENDSSH
 }
