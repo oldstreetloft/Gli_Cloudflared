@@ -24,15 +24,6 @@ parse_args() {
     fi
 }
 
-# Query GH API for latest version number and download URL.
-parse_github() {
-    local auth_repo='cloudflare/cloudflared'
-    local api_url="https://api.github.com/repos/$auth_repo/releases/latest"
-    local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
-    down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
-    printf "Latest cloudflared version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
-}
-
 # Check to see if device and GH are responding.
 test_conn() {
     if ping -c 1 $ip_addr &> /dev/null ; then
@@ -47,6 +38,15 @@ test_conn() {
         printf "\nERROR: You are not connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
     fi
+}
+
+# Query GH API for latest version number and download URL.
+parse_github() {
+    local auth_repo='cloudflare/cloudflared'
+    local api_url="https://api.github.com/repos/$auth_repo/releases/latest"
+    local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
+    down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
+    printf "Latest cloudflared version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
 }
 
 # Detect the OS of the host.
