@@ -3,8 +3,7 @@
 #==================== Main function ====================
 main() {
     parse_args $1 $2        # Get data from user.
-    parse_github            # Find latest download URL.
-    test_conn               # Exit if no connection.
+    test_conn               # Exit if no connection. Find latest download URL.
     detect_os               # Dependencies for android-termux.
     ssh_install             # Install script
 }
@@ -40,8 +39,9 @@ test_conn() {
         printf "\nERROR: No route to device!\n"
         printf "Please ensure connectivity to device and try again.\n\n" ; exit 0
     fi
-    if [[ $latest ]]; then
+    if ping -c 1 1.1.1.1 &> /dev/null ; then
         printf "You are connected to the internet.\n\n"
+        parse_github
         printf "Latest cloudflared version: $latest\n\n"
         printf "Latest GH download URL: \n$down_url\n\n"
     else
