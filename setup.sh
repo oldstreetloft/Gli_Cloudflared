@@ -3,7 +3,8 @@
 #==================== Main function ====================
 main() {
     parse_args $1 $2        # Get data from user.
-    test_conn               # Exit if no connection. Find latest download URL.
+    test_conn               # Test connection.
+    parse_github            # Find latest download URL.
     detect_os               # Dependencies for android-termux.
     ssh_install             # Install script
 }
@@ -27,8 +28,9 @@ parse_args() {
 parse_github() {
     local auth_repo='cloudflare/cloudflared'
     local api_url="https://api.github.com/repos/$auth_repo/releases/latest"
-    latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
+    local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
     down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
+    printf "Latest cloudflared version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
 }
 
 # Check to see if device and GH are responding.
@@ -41,9 +43,6 @@ test_conn() {
     fi
     if ping -c 1 1.1.1.1 &> /dev/null ; then
         printf "You are connected to the internet.\n\n"
-        parse_github
-        printf "Latest cloudflared version: $latest\n\n"
-        printf "Latest GH download URL: \n$down_url\n\n"
     else
         printf "\nERROR: You are not connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n" ; exit 0
