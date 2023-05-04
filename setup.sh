@@ -24,7 +24,7 @@ get_ip() {
     if [[ ! $ip_addr =~ $ip_format ]] ; then
         while true; do
             echo ; read -p "Enter IP address: " ip_addr
-            if [[ $ip_addr =~ $ip_format ]]; then
+            if [[ $ip_addr =~ $ip_format ]] ; then
                 break
             else
                 printf "\nERROR: Invalid IP address format.\nPlease enter a valid IP address.\n"
@@ -39,7 +39,7 @@ get_token() {
     if [[ ! $token =~ $token_format ]] ; then
         while true; do
             echo ; read -p "Enter CFD Token: " token
-            if [[ $token =~ $token_format ]]; then
+            if [[ $token =~ $token_format ]] ; then
                 break
             else
                 printf "\nERROR: Invalid CFD token format.\nPlease enter a valid CFD token.\n"
@@ -71,7 +71,7 @@ parse_github() {
     local api_url="https://api.github.com/repos/$auth_repo/releases/latest"
     local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
     down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
-    if [ -z "$down_url" ]; then
+    if [ -z "$latest" ]; then
         printf "ERROR: Unable to retrieve latest download URL from GitHub API.\n"
         printf "\nUsing default download URL.\n"
         down_url="https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-arm"
@@ -84,7 +84,7 @@ parse_github() {
 detect_os() {
     local target=$(uname -o)
     if [ "$target" = "Android" ] ; then
-        printf "Host OS: $target\n\nInstalling: openssh\n\n" ; 
+        printf "Host OS: $target\n\nInstalling: openssh\n\n"
         pkg update ; pkg install openssh ; echo
     else
         printf "Host OS: $target\n\n"
