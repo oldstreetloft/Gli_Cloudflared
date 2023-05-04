@@ -91,9 +91,9 @@ detect_os() {
     fi
 }
 
-#==================== Start SSH connection ====================
 # Commands sent over SSH stdin as a heredoc.
 ssh_install() {
+#==================== Start SSH connection ====================
 ssh root@$ip_addr << ENDSSH
 
 # Download and install client binary.
@@ -137,8 +137,8 @@ stop_service() {
     pidof cloudflared && kill -SIGINT \\\`pidof cloudflared\\\`
 }
 EOF
-chmod +x /etc/init.d/cloudflared
 #==================== End init config ====================
+chmod +x /etc/init.d/cloudflared
 
 # Enable, start, and report status of service.
 /etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
@@ -153,6 +153,7 @@ else
     printf '\nERROR: INSTALL FAILED!\n\n' ; exit 1
 fi
 ENDSSH
+#==================== End SSH connection ====================
 }
 
 #==================== Start execution ====================
