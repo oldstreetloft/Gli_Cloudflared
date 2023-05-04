@@ -93,7 +93,6 @@ detect_os() {
     printf "Host OS: $target\n\n"
     # Android dependencies.
     if [ "$target" = "Android" ] ; then
-        printf "Installing: openssh\n\n"
         if ! command -v pkg &> /dev/null ; then
             printf "\nERROR: This script must be run in Termux to run on Android.\n" ; exit 1
         fi
