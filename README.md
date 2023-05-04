@@ -11,20 +11,17 @@ curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main
 Script will run with or without command line arguments:
 ```
 ./setup.sh <ip_address> <access_token>
-```
-```
 ...
-Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.
+Enter password: <password>
+...
 ```
 ```
 ./setup.sh
-```
-```
 Enter IP address: <ip_address>
 Enter CFD Token: <access_token>
+...
 Enter password: <password>
 ...
-Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.
 ```
 ## About Cloudflare Tunnels
 Cloudflare Tunnel provides you with a secure way to connect your resources to Cloudflare without a publicly routable IP address. With Tunnel, you do not send traffic to an external IP — instead, a lightweight daemon in your infrastructure [(cloudflared)](https://github.com/cloudflare/cloudflared) creates outbound-only connections to Cloudflare’s global network. Cloudflare Tunnel can connect HTTP web servers, SSH servers, remote desktops, and other protocols safely to Cloudflare. This way, your origins can serve traffic through Cloudflare without being vulnerable to attacks that bypass Cloudflare.
