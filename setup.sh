@@ -12,15 +12,26 @@ main() {
 #==================== Define functions ====================
 # Define command-line arguments or prompt user for ip and token
 parse_args() {
+    # Get IP Address
     if [[ $1 ]] ; then
         ip_addr=$1
     else
         echo ; read -p "Enter IP address: " ip_addr
     fi
+     # Validate IP address
+    if [[ ! $ip_addr =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        printf "\nERROR: Invalid IP address format. Please enter a valid IP address.\n"
+        parse_args
+    fi
+    # Get CFD token
     if [[ $2 ]] ; then
         token=$2
     else
         echo ; read -p "Enter CFD Token: " token
+    fi
+    # Validate CFD token
+    if [[ ! $token =~ ^[a-zA-Z0-9_-]+$ ]]; then
+        echo "ERROR: Invalid CFD token format. Please enter a valid CFD token." ; exit 1
     fi
 }
 
@@ -48,7 +59,8 @@ parse_github() {
     down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$down_url" ]; then
         printf "ERROR: Unable to retrieve latest download URL from GitHub API.\n"
-        exit 1
+        printf "\nUsing default download URL.\n"
+        down_url="https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-arm"
     else
     printf "Latest cloudflared version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
     fi
