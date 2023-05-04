@@ -11,6 +11,12 @@ curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main
 Script will run with or without command line arguments:
 ```
 ./setup.sh <ip_address> <access_token>
+```
+```
+...
+Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.
+```
+```
 ./setup.sh
 ```
 ```
