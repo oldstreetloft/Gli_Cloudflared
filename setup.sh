@@ -10,7 +10,7 @@ main() {
 }
 
 #==================== Define functions ====================
-# Define command-line arguments, prompt user for ip and token, and validate inputs.
+# Define command-line arguments, prompt user for ip and token, validate inputs.
 parse_args() {
     if [[ $1 ]] ; then ip_addr=$1 ; fi
     get_ip
@@ -18,7 +18,7 @@ parse_args() {
     get_token
 }
 
-# Read and validate IP address
+# Read and validate IP address.
 get_ip() {
     local ip_format="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     if [[ ! $ip_addr =~ $ip_format ]] ; then
@@ -33,7 +33,7 @@ get_ip() {
     fi
 }
 
-# Read and validate CFD token
+# Read and validate CFD token.
 get_token() {
     local token_format="^[a-zA-Z0-9]+$"
     if [[ ! $token =~ $token_format ]] ; then
