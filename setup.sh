@@ -4,7 +4,7 @@
 main() {
     parse_args $1 $2        # Get data from user.
     test_conn               # Exit if no connection.
-    parse_github            # Query GH for latest download URL.
+    parse_github            # Query GH for download URL.
     detect_os               # Install dependencies.
     ssh_install             # Install script.
 }
@@ -49,15 +49,15 @@ get_token() {
 }
 
 
-# Check to see if device and 1.1.1.1 are responding.
+# Check to see if device and Github are responding.
 test_conn() {
-    if ping -c 1 $ip_addr &> /dev/null ; then
+    if nc -z -w1 $ip_addr 22 &> /dev/null ; then
         printf "\nProvided IP Address: $ip_addr\n\nDevice is responding.\n\n"
     else
         printf "\nERROR: No route to device!\n"
         printf "Please ensure connectivity to device and try again.\n\n" ; exit 1
     fi
-    if ping -c 1 1.1.1.1 &> /dev/null ; then
+    if ping -c github.com &> /dev/null ; then
         printf "You are connected to the internet.\n\n"
     else
         printf "\nERROR: You are not connected to the internet.\n"
