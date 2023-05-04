@@ -11,6 +11,7 @@ curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main
 Script will run with or without command line arguments:
 ```
 ./setup.sh <ip_address> <access_token>
+./setup.sh
 ```
 ```
 Enter IP address: <ip_address>
