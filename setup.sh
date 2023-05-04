@@ -10,32 +10,44 @@ main() {
 }
 
 #==================== Define functions ====================
-
-# Define command-line arguments or prompt user for ip and token
+# Define command-line arguments, prompt user for ip and token, and validate inputs.
 parse_args() {
-    # Get IP Address
-    if [[ $1 ]] ; then
-        ip_addr=$1
-    else
-        echo ; read -p "Enter IP address: " ip_addr
-    fi
-     # Validate IP address
-    if [[ ! $ip_addr =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        printf "\nERROR: Invalid IP address format. Please enter a valid IP address.\n"
-        parse_args
-    fi
-    # Get CFD token
-    if [[ $2 ]] ; then
-        token=$2
-    else
-        echo ; read -p "Enter CFD Token: " token
-    fi
-    # Validate CFD token
-    if [[ ! $token =~ ^[a-zA-Z0-9_-]+$ ]]; then
-        printf "\nERROR: Invalid CFD token format. Please enter a valid CFD token.\n"
-        parse_args
+    if [[ $1 ]] ; then ip_addr=$1 ; fi
+    get_ip
+    if [[ $2 ]] ; then token=$2 ; fi
+    get_token
+}
+
+# Read and validate IP address
+get_ip() {
+    local ip_format="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+    if [[ ! $ip_addr =~ $ip_format ]] ; then
+        while true; do
+            echo ; read -p "Enter IP address: " ip_addr
+            if [[ $ip_addr =~ $ip_format ]]; then
+                break
+            else
+                printf "\nERROR: Invalid IP address format.\nPlease enter a valid IP address.\n"
+            fi
+        done
     fi
 }
+
+# Read and validate CFD token
+get_token() {
+    local token_format="^[a-zA-Z0-9]+$"
+    if [[ ! $token =~ $token_format ]] ; then
+        while true; do
+            echo ; read -p "Enter CFD Token: " token
+            if [[ $token =~ $token_format ]]; then
+                break
+            else
+                printf "\nERROR: Invalid CFD token format.\nPlease enter a valid CFD token.\n"
+            fi
+        done
+    fi
+}
+
 
 # Check to see if device and 1.1.1.1 are responding.
 test_conn() {
