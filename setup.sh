@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#==================== Initialize variables ====================
+default_url="https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-arm"
+valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+valid_cfd="^[a-zA-Z0-9]+$"
+ip_addr=""
+cfd_token=""
+
 #==================== Main function ====================
 main() {
     parse_args $1 $2        # Get data from user.
@@ -14,17 +21,16 @@ main() {
 parse_args() {
     if [[ $1 ]] ; then ip_addr=$1 ; fi
     get_ip
-    if [[ $2 ]] ; then token=$2 ; fi
+    if [[ $2 ]] ; then cfd_token=$2 ; fi
     get_token
 }
 
-# Read and validate IP address.
+# Read and validate IP address, prompt for re-entry if the input is invalid.
 get_ip() {
-    local ip_format="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
-    if [[ ! $ip_addr =~ $ip_format ]] ; then
+    if [[ ! $ip_addr =~ $valid_ip ]] ; then
         while true; do
             echo ; read -p "Enter IP address: " ip_addr
-            if [[ $ip_addr =~ $ip_format ]] ; then
+            if [[ $ip_addr =~ $valid_ip ]] ; then
                 break
             else
                 printf "\nERROR: Invalid IP address format.\nPlease enter a valid IP address.\n"
@@ -33,13 +39,12 @@ get_ip() {
     fi
 }
 
-# Read and validate CFD token.
+# Read and validate CFD token, prompt for re-entry if the input is invalid.
 get_token() {
-    local token_format="^[a-zA-Z0-9]+$"
-    if [[ ! $token =~ $token_format ]] ; then
+    if [[ ! $cfd_token =~ $valid_cfd ]] ; then
         while true; do
             echo ; read -p "Enter CFD Token: " token
-            if [[ $token =~ $token_format ]] ; then
+            if [[ $cfd_token =~ $valid_cfd ]] ; then
                 break
             else
                 printf "\nERROR: Invalid CFD token format.\nPlease enter a valid CFD token.\n"
@@ -74,7 +79,7 @@ parse_github() {
     if [ -z "$latest" ]; then
         printf "ERROR: Unable to retrieve latest download URL from GitHub API.\n"
         printf "\nUsing default download URL.\n"
-        down_url="https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-arm"
+        down_url=$default_url
     else
     printf "Latest cloudflared version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
     fi
@@ -114,7 +119,7 @@ START=95
 STOP=01
 
 cfd_init="/etc/init.d/cloudflared"
-cfd_token="$token"
+cfd_token="$cfd_token"
 
 boot() {
     ubus -t 30 wait_for network.interface network.loopback 2>/dev/null
