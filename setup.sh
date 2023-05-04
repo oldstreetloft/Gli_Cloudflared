@@ -10,6 +10,7 @@ main() {
 }
 
 #==================== Define functions ====================
+
 # Define command-line arguments or prompt user for ip and token
 parse_args() {
     # Get IP Address
@@ -31,7 +32,8 @@ parse_args() {
     fi
     # Validate CFD token
     if [[ ! $token =~ ^[a-zA-Z0-9_-]+$ ]]; then
-        echo "ERROR: Invalid CFD token format. Please enter a valid CFD token." ; exit 1
+        printf "\nERROR: Invalid CFD token format. Please enter a valid CFD token.\n"
+        parse_args
     fi
 }
 
