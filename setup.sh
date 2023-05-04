@@ -57,7 +57,7 @@ test_conn() {
         printf "\nERROR: No route to device!\n"
         printf "Please ensure connectivity to device and try again.\n\n" ; exit 1
     fi
-    if ping -c github.com &> /dev/null ; then
+    if ping -c 1 github.com &> /dev/null ; then
         printf "You are connected to the internet.\n\n"
     else
         printf "\nERROR: You are not connected to the internet.\n"
