@@ -1,12 +1,5 @@
 #!/bin/bash
 
-#==================== Initialize variables ====================
-default_url="https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-arm"
-valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
-valid_cfd="^[a-zA-Z0-9]+$"
-ip_addr=""
-cfd_token=""
-
 #==================== Main function ====================
 main() {
     parse_args $1 $2        # Get data from user.
@@ -19,14 +12,18 @@ main() {
 #==================== Define functions ====================
 # Define command-line arguments, prompt user for ip and token, validate inputs.
 parse_args() {
+    # IP address
     if [[ $1 ]] ; then ip_addr=$1 ; fi
     get_ip
-    if [[ $2 ]] ; then cfd_token=$2 ; fi
+
+    # CFD token
+    if [[ $2 ]] ; then token=$2 ; fi
     get_token
 }
 
-# Read and validate IP address, prompt for re-entry if the input is invalid.
+# Read and validate IP address.
 get_ip() {
+    local valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     if [[ ! $ip_addr =~ $valid_ip ]] ; then
         while true; do
             echo ; read -p "Enter IP address: " ip_addr
@@ -39,12 +36,13 @@ get_ip() {
     fi
 }
 
-# Read and validate CFD token, prompt for re-entry if the input is invalid.
+# Read and validate CFD token.
 get_token() {
-    if [[ ! $cfd_token =~ $valid_cfd ]] ; then
+    local valid_token="^[a-zA-Z0-9]+$"
+    if [[ ! $token =~ $valid_token ]] ; then
         while true; do
             echo ; read -p "Enter CFD Token: " token
-            if [[ $cfd_token =~ $valid_cfd ]] ; then
+            if [[ $token =~ $valid_token ]] ; then
                 break
             else
                 printf "\nERROR: Invalid CFD token format.\nPlease enter a valid CFD token.\n"
@@ -56,47 +54,52 @@ get_token() {
 
 # Check to see if device and Github are responding.
 test_conn() {
+    # Check for SSH on port 22 with netcat.
     if nc -z -w1 $ip_addr 22 &> /dev/null ; then
         printf "\nProvided IP Address: $ip_addr\n\nDevice is responding.\n\n"
     else
-        printf "\nERROR: No route to device!\n"
+        printf "\nERROR: No route to device!\nAre you behind a VPN or connected to the wrong network?\n"
         printf "Please ensure connectivity to device and try again.\n\n" ; exit 1
     fi
+    # Check for internet connectivity with ping.
     if ping -c 1 github.com &> /dev/null ; then
         printf "You are connected to the internet.\n\n"
     else
-        printf "\nERROR: You are not connected to the internet.\n"
+        printf "\nERROR: You are NOT connected to the internet.\n\n"
         printf "Please ensure internet connectivity and try again.\n\n" ; exit 1
     fi
 }
 
 # Query GH API for latest version number and download URL.
 parse_github() {
-    local auth_repo='cloudflare/cloudflared'
-    local api_url="https://api.github.com/repos/$auth_repo/releases/latest"
+    local auth='cloudflare'
+    local repo='cloudflared'
+    local api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
     local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
-    down_url="https://github.com/$auth_repo/releases/download/$latest/cloudflared-linux-arm"
+    down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$latest" ]; then
+        # Using fallback URL.
         printf "ERROR: Unable to retrieve latest download URL from GitHub API.\n"
         printf "\nUsing default download URL.\n"
-        down_url=$default_url
+        down_url="https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-arm"
     else
-    printf "Latest cloudflared version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
+    printf "Latest $repo version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
     fi
 }
 
 # Detect the OS of the host, install dependencies.
 detect_os() {
     local target=$(uname -o)
+    printf "Host OS: $target\n\n"
+
+    # Install android-termux dependencies.
     if [ "$target" = "Android" ] ; then
-        printf "Host OS: $target\n\nInstalling: openssh\n\n"
+        printf "Installing: openssh\n\n"
         pkg update ; pkg install openssh ; echo
-    else
-        printf "Host OS: $target\n\n"
     fi
 }
 
-# Commands sent over SSH stdin as a heredoc.
+# Commands sent over SSH STDIN as a heredoc.
 ssh_install() {
 #==================== Start SSH connection ====================
 ssh root@$ip_addr << ENDSSH
@@ -119,7 +122,7 @@ START=95
 STOP=01
 
 cfd_init="/etc/init.d/cloudflared"
-cfd_token="$cfd_token"
+cfd_token="$token"
 
 boot() {
     ubus -t 30 wait_for network.interface network.loopback 2>/dev/null
