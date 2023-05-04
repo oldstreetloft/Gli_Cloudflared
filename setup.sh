@@ -91,9 +91,12 @@ parse_github() {
 detect_os() {
     local target=$(uname -o)
     printf "Host OS: $target\n\n"
-    # Install android-termux dependencies.
+    # Android dependencies.
     if [ "$target" = "Android" ] ; then
         printf "Installing: openssh\n\n"
+        if ! command -v pkg &> /dev/null; then
+            printf "\nERROR: This script must be run in Termux to run on Android.\n" ; exit 1
+        fi
         pkg update ; pkg install openssh ; echo
     fi
 }
