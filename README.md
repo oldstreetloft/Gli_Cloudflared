@@ -3,7 +3,7 @@
 ## Description:
 This Bash script installs and configures the [Cloudflare Tunnel client](https://github.com/cloudflare/cloudflared) on an OpenWRT router over a network. The script prompts the user for the device's IP address and Cloudflare Access token, checks for internet connectivity and device prescesnce, starts a SSH connection to the device, downloads the latest version from GitHub, generates an init config file, starts and enables the cloudflared service, and verifies that the installation was successful. The key functionality of the script is to automate the installation and configuration process, making it easier for users to set up Cloudflare tunnels on their devices.
 ## Installation:
-1.  Copy the following command, and paste it into a terminal window on the local machine, then tap Enter key:
+1.  Copy the following command, and paste it into a terminal window on your local machine (laptop), then tap Enter key:
 ```
 curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main/setup.sh ; chmod +x setup.sh ; ./setup.sh
 ```
