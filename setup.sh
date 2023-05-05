@@ -88,14 +88,14 @@ parse_github() {
 
 # Detect the OS of the host, install dependencies.
 detect_os() {
-    local host=$(uname -s)
+    local host=$(uname -o)
     printf "Host OS: $host\n\n"
     # Android dependencies.
     if [ "$host" = "Android" ] ; then
-        if ! type pkg &> /dev/null ; then
-            printf "\nERROR: This script must be run in Termux to run on Android.\n" ; exit 1
+        if ! command -v pkg &> /dev/null ; then
+            printf "\nERROR: This script must be run in Termux on Android.\n" ; exit 1
         fi
-        if ! type ssh &> /dev/null ; then
+        if ! command -v ssh &> /dev/null ; then
             pkg update ; pkg install openssh ; echo
         fi
     fi
