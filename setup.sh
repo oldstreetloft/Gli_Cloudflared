@@ -152,15 +152,15 @@ chmod +x /etc/init.d/cloudflared
 
 # Enable, start, and report status of service.
 /etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
-printf '\nCloudflared is ' ; /etc/init.d/cloudflared status
+printf "\nCloudflared is " ; /etc/init.d/cloudflared status
 
 # Verify that cloudflare is generating log data.
 sleep 5
 if logread | grep cloudflared &> /dev/null; then
-    printf '\nSUCCESS: INSTALL COMPLETED.\n\n'
-    printf 'Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n'
+    printf "\nSUCCESS: INSTALL COMPLETED.\n\n"
+    printf "Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n"
 else
-    printf '\nERROR: INSTALL FAILED!\n\n' ; exit 1
+    printf "\nERROR: INSTALL FAILED!\n\n" ; exit 1
 fi
 ENDSSH
 #==================== End SSH connection ====================
