@@ -108,7 +108,7 @@ ssh root@$ip_addr -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa 2> /de
 
 # Download and install client binary.
 printf "\nDownloading cloudflared package.\n"
-if curl -L $down_url -o cloudflared &> /dev/null ; then
+if curl -L $down_url -o cloudflared 1> /dev/null ; then
     chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared ; printf "\nPackage installed.\n"
 else
     printf "\nERROR: Device is NOT connected to the internet.\n"
@@ -156,7 +156,7 @@ printf "\nCloudflared is " ; /etc/init.d/cloudflared status
 
 # Verify that cloudflare is generating log data.
 sleep 5
-if logread | grep cloudflared &> /dev/null; then
+if logread | grep cloudflared 1> /dev/null; then
     printf "\nSUCCESS: INSTALL COMPLETED.\n\n"
     printf "Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n"
 else
