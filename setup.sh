@@ -15,7 +15,6 @@ parse_args() {
     # IP address
     if [[ $1 ]] ; then ip_addr=$1 ; fi
     get_ip
-
     # CFD token
     if [[ $2 ]] ; then token=$2 ; fi
     get_token
