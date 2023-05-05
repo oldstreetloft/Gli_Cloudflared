@@ -108,7 +108,7 @@ ssh root@$ip_addr -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa 2> /de
 
 # Download and install client binary.
 printf "\nDownloading cloudflared package.\n"
-if curl -L $down_url -o cloudflared 1> /dev/null ; then
+if curl -L $down_url -o cloudflared ; then
     chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared ; printf "\nPackage installed.\n"
 else
     printf "\nERROR: Device is NOT connected to the internet.\n"
@@ -150,9 +150,9 @@ EOF
 #==================== End init config ====================
 chmod +x /etc/init.d/cloudflared
 
-# Enable, start, and report status of service.
-/etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
-printf "\nCloudflared is " ; /etc/init.d/cloudflared status
+# Enable and start service.
+/etc/init.d/cloudflared enable
+/etc/init.d/cloudflared start
 
 # Verify that cloudflare is generating log data.
 sleep 5
