@@ -55,7 +55,7 @@ get_token() {
 test_conn() {
     # Check for response with ping.
     if ping -c 1 $ip_addr &> /dev/null ; then
-        printf "\nProvided IP Address: $ip_addr\n\nDevice is responding.\n\n"
+        printf "\nDevice is responding.\n\n"
     else
         printf "\nERROR: No route to device!\nAre you behind a VPN or connected to the wrong network?\n"
         printf "Please ensure connectivity to device and try again.\n\n" ; exit 1
