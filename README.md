@@ -6,7 +6,7 @@ This Bash script installs and configures the [Cloudflare Tunnel client](https://
 1.  Open a terminal window on your local machine (laptop).
 2.  Copy the following command and paste it into the terminal window:
 ```
-curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main/setup.sh ; chmod +x setup.sh ; ./setup.sh
+curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main/setup.sh ; sh setup.sh
 ```
 3.  Press Enter to run the command.
 4.  Follow the prompts to complete the installation.
