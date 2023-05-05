@@ -104,11 +104,11 @@ detect_os() {
 # Commands sent over SSH STDIN as a heredoc.
 ssh_install() {
 #==================== Start SSH connection ====================
-ssh root@$ip_addr -oStrictHostKeyChecking=no << ENDSSH
+ssh root@$ip_addr -oStrictHostKeyChecking=no <<- ENDSSH
 
 # Download and install client binary.
 printf "\nDownloading cloudflared package.\n"
-if curl -L $down_url -o cloudflared ; then
+if curl -L $down_url -o cloudflared &> /dev/null ; then
     chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared ; printf "\nPackage installed.\n"
 else
     printf "\nERROR: Device is NOT connected to the internet.\n"
@@ -116,7 +116,7 @@ else
 fi
 
 #==================== Start init config ====================
-cat > /etc/init.d/cloudflared << EOF
+cat > /etc/init.d/cloudflared <<- EOF
 #!/bin/sh /etc/rc.common
 
 USE_PROCD=1
