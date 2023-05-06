@@ -6,7 +6,6 @@ auth="cloudflare"
 repo="cloudflared"
 # Fallback URL
 alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
-
 # SSH arguments
 ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
 
