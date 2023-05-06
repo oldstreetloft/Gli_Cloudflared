@@ -23,26 +23,14 @@ main() {
 parse_arg() {
     # IP address
     if [[ $1 ]] ; then ip_addr=$1 ; fi
-    get_ip
+    while [[ ! $ip_addr =~ $valid_ip ]] ; do
+        read -p "Enter IP address: " ip_addr ; done
     # CFD token
     if [[ $2 ]] ; then token=$2 ; fi
+    while [[ ! $token =~ $valid_token ]] ; do
+        read -p "Enter CFD Token: " token ; done
     get_token
 }
-
-# Read and validate IP Address.
-get_ip() {
-    while [[ ! $ip_addr =~ $valid_ip ]] ; do
-        printf "\nPlease enter a valid IP address.\n\n"
-        read -p "Enter IP address: " ip_addr ; done
-}
-
-# Read and validate CFD token.
-get_token() {
-    while [[ ! $token =~ $valid_token ]] ; do
-        printf "\nPlease enter a valid CFD token.\n\n"
-        read -p "Enter CFD Token: " token ; done
-}
-
 
 # Check to see if device and Github are responding.
 test_conn() {
