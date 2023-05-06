@@ -50,8 +50,7 @@ parse_github() {
     down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$latest" ] ; then
         printf "\nERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
-        printf "Using alternate download URL.\n\n"
-        down_url=$alt_url ; fi
+        printf "Using alternate download URL.\n\n" ; down_url=$alt_url ; fi
 }
 
 # Detect the OS of the host, install dependencies.
