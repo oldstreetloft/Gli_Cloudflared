@@ -1,8 +1,6 @@
 #!/bin/bash
 
 #==================== Initialize variables ====================
-valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
-valid_token="^[a-zA-Z0-9]+$"
 auth="cloudflare"
 repo="cloudflared"
 alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
@@ -20,9 +18,12 @@ main() {
 #==================== Define functions ====================
 # Define command-line arguments, prompt user for ip and token, validate inputs.
 parse_arg() {
+    local valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     if [[ $1 ]] ; then ip_addr=$1 ; fi
     while [[ ! $ip_addr =~ $valid_ip ]] ; do
         read -p "Enter IP address: " ip_addr ; done
+
+    local valid_token="^[a-zA-Z0-9]+$"
     if [[ $2 ]] ; then token=$2 ; fi
     while [[ ! $token =~ $valid_token ]] ; do
         read -p "Enter CFD Token: " token ; done
