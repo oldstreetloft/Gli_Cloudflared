@@ -26,6 +26,6 @@ SUCCESS: INSTALL COMPLETED.
 Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.
 ```
 ## About Cloudflare Tunnels
-*[Cloudflare Tunnel](https://github.com/cloudflare/cloudflared)**[Cloudflare Tunnel client](https://github.com/cloudflare/cloudflared)* provides you with a secure way to connect your resources to Cloudflare without a publicly routable IP address. With Tunnel, you do not send traffic to an external IP — instead, a lightweight daemon in your infrastructure *(cloudflared)* creates outbound-only connections to Cloudflare’s global network. Cloudflare Tunnel can connect HTTP web servers, SSH servers, remote desktops, and other protocols safely to Cloudflare. This way, your origins can serve traffic through Cloudflare without being vulnerable to attacks that bypass Cloudflare.
+*[Cloudflare Tunnel](https://github.com/cloudflare/cloudflared)* provides you with a secure way to connect your resources to Cloudflare without a publicly routable IP address. With Tunnel, you do not send traffic to an external IP — instead, a lightweight daemon in your infrastructure *(cloudflared)* creates outbound-only connections to Cloudflare’s global network. Cloudflare Tunnel can connect HTTP web servers, SSH servers, remote desktops, and other protocols safely to Cloudflare. This way, your origins can serve traffic through Cloudflare without being vulnerable to attacks that bypass Cloudflare.
 ## License:
 This script is licensed under the GPLv3 License. See the LICENSE file for more information.
