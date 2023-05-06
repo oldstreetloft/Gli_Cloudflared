@@ -1,9 +1,13 @@
 #!/bin/bash
 
 #==================== Initialize variables ====================
+# Parse GitHub
 auth="cloudflare"
 repo="cloudflared"
+# Fallback URL
 alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
+
+# SSH arguments
 ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
 
 #==================== Main function ====================
@@ -29,7 +33,7 @@ parse_arg() {
         read -p "Enter CFD Token: " token ; done
 }
 
-# Check to see if device and Github are responding.
+# Check to see if device and GitHub are responding.
 test_conn() {
     if ! ping -c 1 $ip_addr &> /dev/null ; then
         printf "\nERROR: No route to device!\nAre you behind a VPN or connected to the wrong network?\n"
@@ -42,7 +46,7 @@ test_conn() {
 # Query GH API for latest version number and download URL.
 parse_github() {
     local api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
-    local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
+    local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
     down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$latest" ] ; then
         printf "\nERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
