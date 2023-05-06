@@ -1,16 +1,18 @@
 #!/bin/bash
 
-#==================== Initialize variables ====================
-# Parse GitHub
-auth="cloudflare"
-repo="cloudflared"
-# Fallback URL
-alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
-# SSH arguments
-ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
-
 #==================== Main function ====================
 main() {
+    # Parse arguments    
+    local ip_addr=''
+    local token=''
+    # Parse GitHub
+    local down_url=''
+    local auth="cloudflare"
+    local repo="cloudflared"
+    local alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
+    # SSH arguments
+    local ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
+
     parse_arg $@            # Get data from user.
     test_conn               # Exit if no connection.
     parse_github            # Query GH for download URL.
