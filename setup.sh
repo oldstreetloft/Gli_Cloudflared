@@ -25,7 +25,7 @@ get_ip() {
     local valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     while true; do
         if [[ ! $ip_addr =~ $valid_ip ]] ; then
-            printf "\nPlease enter a valid IP address.\n"
+            printf "\nPlease enter a valid IP address.\n\n"
             read -p "Enter IP address: " ip_addr
         else
             break
@@ -38,7 +38,7 @@ get_token() {
     local valid_token="^[a-zA-Z0-9]+$"
     while true; do
         if [[ ! $token =~ $valid_token ]] ; then
-            printf "\nPlease enter a valid CFD token.\n"
+            printf "\nPlease enter a valid CFD token.\n\n"
             read -p "Enter CFD Token: " token
         else
             break
@@ -56,7 +56,7 @@ test_conn() {
     fi
     # Check for internet connectivity with ping.
     if ! ping -c 1 github.com &> /dev/null ; then
-        printf "ERROR: You are NOT connected to the internet.\n"
+        printf "\nERROR: You are NOT connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n" ; exit 1
     fi
 }
@@ -70,7 +70,7 @@ parse_github() {
     down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$latest" ] ; then
         # Using fallback URL.
-        printf "ERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
+        printf "\nERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
         printf "Using default download URL.\n\n"
         down_url="https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-arm"
     fi
@@ -82,9 +82,11 @@ detect_os() {
     # Android dependencies.
     if [ "$host" = "Android" ] ; then
         if ! command -v pkg &> /dev/null ; then
-            printf "ERROR: This script must be run in Termux on Android.\n\n" ; exit 1 ; fi
+            printf "\nERROR: This script must be run in Termux.\n\n" ; exit 1 ; fi
         if ! command -v ssh &> /dev/null ; then
-            pkg update ; pkg install openssh ; echo ; fi
+            pkg update &> /dev/null
+            pkg install openssh &> /dev/null
+        fi
     fi
 }
 
