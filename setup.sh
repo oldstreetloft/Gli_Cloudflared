@@ -32,7 +32,7 @@ get_ip() {
 # Read and validate CFD token.
 get_token() {
     local valid_token="^[a-zA-Z0-9]+$"
-    while [[ ! $token =~ $valid_token ]]; do
+    while [[ ! $token =~ $valid_token ]] ; do
         printf "\nPlease enter a valid CFD token.\n\n"
         read -p "Enter CFD Token: " token
     done
