@@ -25,8 +25,7 @@ get_ip() {
     local valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     while [[ ! $ip_addr =~ $valid_ip ]] ; do
         printf "\nPlease enter a valid IP address.\n\n"
-        read -p "Enter IP address: " ip_addr
-    done
+        read -p "Enter IP address: " ip_addr ; done
 }
 
 # Read and validate CFD token.
@@ -34,8 +33,7 @@ get_token() {
     local valid_token="^[a-zA-Z0-9]+$"
     while [[ ! $token =~ $valid_token ]] ; do
         printf "\nPlease enter a valid CFD token.\n\n"
-        read -p "Enter CFD Token: " token
-    done
+        read -p "Enter CFD Token: " token ; done
 }
 
 
@@ -44,13 +42,11 @@ test_conn() {
     # Check for response with ping.
     if ! ping -c 1 $ip_addr &> /dev/null ; then
         printf "\nERROR: No route to device!\nAre you behind a VPN or connected to the wrong network?\n"
-        printf "Please ensure connectivity to device and try again.\n\n" ; exit 1
-    fi
+        printf "Please ensure connectivity to device and try again.\n\n" ; exit 1 ; fi
     # Check for internet connectivity with ping.
     if ! ping -c 1 github.com &> /dev/null ; then
         printf "\nERROR: You are NOT connected to the internet.\n"
-        printf "Please ensure internet connectivity and try again.\n\n" ; exit 1
-    fi
+        printf "Please ensure internet connectivity and try again.\n\n" ; exit 1 ; fi
 }
 
 # Query GH API for latest version number and download URL.
@@ -76,8 +72,7 @@ detect_os() {
             printf "\nERROR: This script must be run in Termux.\n\n" ; exit 1 ; fi
         if ! command -v ssh &> /dev/null ; then
             pkg update &> /dev/null
-            pkg install openssh &> /dev/null
-        fi
+            pkg install openssh &> /dev/null ; fi
     fi
 }
 
@@ -89,8 +84,7 @@ ssh root@$ip_addr -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa 2> /de
 printf "\nDownloading cloudflared.\n\n"
 if ! curl -L $down_url -o cloudflared ; then
     printf "ERROR: Download failed.\n"
-    printf "Please ensure internet connectivity and try again.\n\n" ; exit 1
-fi
+    printf "Please ensure internet connectivity and try again.\n\n" ; exit 1 ; fi
 
 printf "Installing cloudflared.\n\n"
 chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared
@@ -136,11 +130,9 @@ printf "Starting and enabling service.\n\n"
 /etc/init.d/cloudflared enable
 /etc/init.d/cloudflared start
 
-printf "Verifying that service is running.\n\n"
-sleep 5
+printf "Verifying that service is running.\n\n" ; sleep 5
 if ! logread | grep cloudflared 1> /dev/null; then
-    printf "ERROR: INSTALL FAILED!\n\n" ; exit 1
-fi
+    printf "ERROR: INSTALL FAILED!\n\n" ; exit 1 ; fi
 printf "SUCCESS: INSTALL COMPLETED.\n\n"
 printf "Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n"
 ENDSSH
