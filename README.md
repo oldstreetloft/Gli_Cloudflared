@@ -1,7 +1,8 @@
 # Cloudflared ARM Client Installer  <img src="https://user-images.githubusercontent.com/95660759/234452549-53925c8f-bc2f-4eaf-b2e1-8cf13d2adbe7.png" width="50" height="50">
 
 ## Description:
-This script installs and configures the *[Cloudflare Tunnel client](https://github.com/cloudflare/cloudflared)* on an **OpenWRT** router over a network. The script prompts the user for the device's IP address and Cloudflare Access token, then it uses SSH to connect and perform the installation. 
+This script installs and configures the *[Cloudflare Tunnel client](https://github.com/cloudflare/cloudflared)* on an **OpenWRT** router over a network.
+The script prompts the user for the device's IP address and Cloudflare Access token, then it uses SSH to connect and perform the installation. 
 ## Installation:
 1.  Open a terminal window on your local machine (laptop).
 2.  Copy the following command and paste it into the terminal window:
