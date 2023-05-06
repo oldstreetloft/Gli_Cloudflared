@@ -21,11 +21,9 @@ main() {
 #==================== Define functions ====================
 # Define command-line arguments, prompt user for ip and token, validate inputs.
 parse_arg() {
-    # IP address
     if [[ $1 ]] ; then ip_addr=$1 ; fi
     while [[ ! $ip_addr =~ $valid_ip ]] ; do
         read -p "Enter IP address: " ip_addr ; done
-    # CFD token
     if [[ $2 ]] ; then token=$2 ; fi
     while [[ ! $token =~ $valid_token ]] ; do
         read -p "Enter CFD Token: " token ; done
@@ -33,11 +31,9 @@ parse_arg() {
 
 # Check to see if device and Github are responding.
 test_conn() {
-    # Check for device response with ping.
     if ! ping -c 1 $ip_addr &> /dev/null ; then
         printf "\nERROR: No route to device!\nAre you behind a VPN or connected to the wrong network?\n"
         printf "Please ensure device connectivity and try again.\n\n" ; exit 1 ; fi
-    # Check for internet connectivity with ping.
     if ! ping -c 1 github.com &> /dev/null ; then
         printf "\nERROR: You are NOT connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n" ; exit 1 ; fi
@@ -48,9 +44,8 @@ parse_github() {
     local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
     down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$latest" ] ; then
-        # Using fallback URL.
         printf "\nERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
-        printf "Using default download URL.\n\n"
+        printf "Using alternate download URL.\n\n"
         down_url=$alt_url ; fi
 }
 
