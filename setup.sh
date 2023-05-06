@@ -29,7 +29,6 @@ parse_arg() {
     if [[ $2 ]] ; then token=$2 ; fi
     while [[ ! $token =~ $valid_token ]] ; do
         read -p "Enter CFD Token: " token ; done
-    get_token
 }
 
 # Check to see if device and Github are responding.
