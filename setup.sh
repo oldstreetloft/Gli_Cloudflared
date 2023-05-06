@@ -29,7 +29,7 @@ get_ip() {
             if [[ $ip_addr =~ $valid_ip ]] ; then
                 break
             else
-                printf "\nERROR: Invalid IP address format.\nPlease enter a valid IP address.\n"
+                printf "\nPlease enter a valid IP address.\n"
             fi
         done
     fi
@@ -44,7 +44,7 @@ get_token() {
             if [[ $token =~ $valid_token ]] ; then
                 break
             else
-                printf "\nERROR: Invalid CFD token format.\nPlease enter a valid CFD token.\n"
+                printf "\nPlease enter a valid CFD token.\n"
             fi
         done
     fi
