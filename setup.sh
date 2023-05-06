@@ -23,26 +23,18 @@ parse_args() {
 # Read and validate IP Address.
 get_ip() {
     local valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
-    while true; do
-        if [[ ! $ip_addr =~ $valid_ip ]] ; then
-            printf "\nPlease enter a valid IP address.\n\n"
-            read -p "Enter IP address: " ip_addr
-        else
-            break
-        fi
+    while [[ ! $ip_addr =~ $valid_ip ]] ; do
+        printf "\nPlease enter a valid IP address.\n\n"
+        read -p "Enter IP address: " ip_addr
     done
 }
 
 # Read and validate CFD token.
 get_token() {
     local valid_token="^[a-zA-Z0-9]+$"
-    while true; do
-        if [[ ! $token =~ $valid_token ]] ; then
-            printf "\nPlease enter a valid CFD token.\n\n"
-            read -p "Enter CFD Token: " token
-        else
-            break
-        fi
+    while [[ ! $token =~ $valid_token ]]; do
+        printf "\nPlease enter a valid CFD token.\n\n"
+        read -p "Enter CFD Token: " token
     done
 }
 
