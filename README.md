@@ -20,6 +20,8 @@ chmod +x setup.sh
 Script executes with or without command line arguments:
 ```
 ./setup.sh <ip_address> <access_token>
+```
+```
 Enter IP address: <ip_address>
 Enter CFD Token: <access_token>
 Enter password: <password>
