@@ -54,17 +54,13 @@ get_token() {
 # Check to see if device and Github are responding.
 test_conn() {
     # Check for response with ping.
-    if ping -c 1 $ip_addr &> /dev/null ; then
-        printf "\nDevice is responding.\n\n"
-    else
+    if ! ping -c 1 $ip_addr &> /dev/null ; then
         printf "\nERROR: No route to device!\nAre you behind a VPN or connected to the wrong network?\n"
         printf "Please ensure connectivity to device and try again.\n\n" ; exit 1
     fi
     # Check for internet connectivity with ping.
-    if ping -c 1 github.com &> /dev/null ; then
-        printf "You are connected to the internet.\n\n"
-    else
-        printf "\nERROR: You are NOT connected to the internet.\n\n"
+    if ! ping -c 1 github.com &> /dev/null ; then
+        printf "ERROR: You are NOT connected to the internet.\n"
         printf "Please ensure internet connectivity and try again.\n\n" ; exit 1
     fi
 }
@@ -78,22 +74,19 @@ parse_github() {
     down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$latest" ] ; then
         # Using fallback URL.
-        printf "ERROR: Unable to retrieve latest download URL from GitHub API.\n"
-        printf "\nUsing default download URL.\n"
+        printf "ERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
+        printf "Using default download URL.\n\n"
         down_url="https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-arm"
-    else
-    printf "Latest $repo version: $latest\n\nLatest GH download URL: \n$down_url\n\n"
     fi
 }
 
 # Detect the OS of the host, install dependencies.
 detect_os() {
     local host=$(uname -o)
-    printf "Host OS: $host\n\n"
     # Android dependencies.
     if [ "$host" = "Android" ] ; then
         if ! command -v pkg &> /dev/null ; then
-            printf "\nERROR: This script must be run in Termux on Android.\n" ; exit 1 ; fi
+            printf "ERROR: This script must be run in Termux on Android.\n\n" ; exit 1 ; fi
         if ! command -v ssh &> /dev/null ; then
             pkg update ; pkg install openssh ; echo ; fi
     fi
@@ -104,15 +97,17 @@ ssh_install() {
 #==================== Start SSH connection ====================
 ssh root@$ip_addr -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa 2> /dev/null <<- ENDSSH
 
-# Download and install client binary.
-printf "\nDownloading cloudflared package.\n"
-if curl -L $down_url -o cloudflared ; then
-    chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared ; printf "\nPackage installed.\n"
-else
-    printf "\nERROR: Device is NOT connected to the internet.\n"
+printf "\nDownloading cloudflared.\n\n"
+if ! curl -L $down_url -o cloudflared ; then
+    printf "ERROR: Download failed.\n"
     printf "Please ensure internet connectivity and try again.\n\n" ; exit 1
 fi
 
+printf "Installing cloudflared.\n\n"
+chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared
+printf "Package installed.\n\n"
+
+printf "Writing init config.\n\n"
 #==================== Start init config ====================
 cat > /etc/init.d/cloudflared <<- EOF
 #!/bin/sh /etc/rc.common
@@ -148,18 +143,17 @@ EOF
 #==================== End init config ====================
 chmod +x /etc/init.d/cloudflared
 
-# Enable and start service.
+printf "Starting and enabling service.\n\n"
 /etc/init.d/cloudflared enable
 /etc/init.d/cloudflared start
 
-# Verify that cloudflare is generating log data.
+printf "Verifying that service is running.\n\n"
 sleep 5
-if logread | grep cloudflared 1> /dev/null; then
-    printf "\nSUCCESS: INSTALL COMPLETED.\n\n"
-    printf "Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n"
-else
-    printf "\nERROR: INSTALL FAILED!\n\n" ; exit 1
+if ! logread | grep cloudflared 1> /dev/null; then
+    printf "ERROR: INSTALL FAILED!\n\n" ; exit 1
 fi
+printf "SUCCESS: INSTALL COMPLETED.\n\n"
+printf "Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n"
 ENDSSH
 #==================== End SSH connection ====================
 }
