@@ -55,16 +55,15 @@ test_conn() {
 
 # Query GH API for latest version number and download URL.
 parse_github() {
-    local auth='cloudflare'
-    local repo='cloudflared'
-    local api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
+    local arepo="cloudflare/cloudflared"
+    local api_url="https://api.github.com/repos/$arepo/releases/latest"
     local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
-    down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
+    down_url="https://github.com/$arepo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$latest" ] ; then
         # Using fallback URL.
         printf "\nERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
         printf "Using default download URL.\n\n"
-        down_url="https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-arm"
+        down_url="https://github.com/$arepo/releases/download/2023.5.0/cloudflared-linux-arm"
     fi
 }
 
