@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #==================== Initialize variables ====================
+valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+valid_token="^[a-zA-Z0-9]+$"
 auth="cloudflare"
 repo="cloudflared"
 api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
 alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
 ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
-valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
-valid_token="^[a-zA-Z0-9]+$"
 
 #==================== Main function ====================
 main() {
