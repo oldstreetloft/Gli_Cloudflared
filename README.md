@@ -20,6 +20,7 @@ Script can run with or without command line arguments:
 Enter password: <password>
 ...
 SUCCESS: INSTALL COMPLETED.
+
 Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.
 
 ```
