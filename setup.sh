@@ -5,7 +5,6 @@ valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
 valid_token="^[a-zA-Z0-9]+$"
 auth="cloudflare"
 repo="cloudflared"
-api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
 alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
 ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
 
@@ -41,6 +40,7 @@ test_conn() {
 
 # Query GH API for latest version number and download URL.
 parse_github() {
+    local api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
     local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}') &> /dev/null
     down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$latest" ] ; then
