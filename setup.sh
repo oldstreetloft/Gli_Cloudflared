@@ -2,7 +2,7 @@
 
 #==================== Main function ====================
 main() {
-    parse_args $1 $2        # Get data from user.
+    parse_args $@           # Get data from user.
     test_conn               # Exit if no connection.
     parse_github            # Query GH for download URL.
     detect_os               # Install dependencies.
@@ -148,4 +148,4 @@ ENDSSH
 }
 
 #==================== Start execution ====================
-main $1 $2
+main $@
