@@ -26,12 +26,12 @@ main() {
 parse_arg() {
     if [ -n "$1" ]] ; then ip_addr=$1 ; fi
     local valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
-    while [ ! echo "$ip_addr" | grep -Eq "$valid_ip" ] ; do
+    while ! echo "$ip_addr" | grep -Eq "$valid_ip" ; do
         read -p "Enter IP address: " ip_addr ; done
 
     if [ -n "$2" ] ; then token=$2 ; fi
     local valid_token="^[a-zA-Z0-9]+$"
-    while [ ! echo "$token" | grep -Eq "$valid_token" ] ; do
+    while ! echo "$token" | grep -Eq "$valid_token" ; do
         read -p "Enter CFD Token: " token ; done
 }
 
