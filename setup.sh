@@ -14,7 +14,7 @@ main() {
     # SSH arguments
     local ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
 
-    parse_arg $@            # Get data from user.
+    parse_arg "$@"          # Get data from user.
     test_conn               # Exit if no connection.
     parse_github            # Query GH for download URL.
     detect_os               # Install dependencies.
@@ -131,4 +131,4 @@ ENDSSH
 }
 
 #==================== Start execution ====================
-main $@
+main "$@"
