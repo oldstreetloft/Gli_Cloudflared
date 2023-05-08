@@ -28,7 +28,7 @@ parse_arg() {
     while ! echo "$ip_addr" | grep -Eq "$valid_ip" ; do
         read -p "Enter IP address: " ip_addr ; done
 
-    if [[ $2 ]] ; then token=$2 ; fi
+    if [ -n "$2" ] ; then token=$2 ; fi
     local valid_token="^[a-zA-Z0-9]+$"
     while ! echo "$token" | grep -Eq "$valid_token" ; do
         read -p "Enter CFD Token: " token ; done
