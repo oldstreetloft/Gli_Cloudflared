@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #==================== Main function ====================
+# Main function is executed at the bottom of the script so that an incomplete download will run nothing
 main() {
     # Parse arguments    
     local ip_addr=''

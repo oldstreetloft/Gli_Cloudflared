@@ -8,7 +8,7 @@ The script prompts the user for the device's IP address and Cloudflare Access to
 1.  Open a terminal window on your local machine (laptop).
 2.  Copy the following command and paste it into the terminal window:
 ```
-curl -O https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main/setup.sh;chmod +x setup.sh;./setup.sh
+curl -fsSL https://raw.githubusercontent.com/oldstreetloft/install-cloudflared/main/setup.sh | sh
 ```
 3.  Press Enter to run the command.
 4.  Follow the prompts to complete the installation.
