@@ -4,15 +4,15 @@
 # Main function is executed at the bottom of the script so that an incomplete download will run nothing
 main() {
     # Parse arguments    
-    set ip_addr=''
-    set token=''
+    local ip_addr=''
+    local token=''
     # Parse GitHub
-    set down_url=''
-    set auth="cloudflare"
-    set repo="cloudflared"
-    set alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
+    local down_url=''
+    local auth="cloudflare"
+    local repo="cloudflared"
+    local alt_url="https://github.com/"$auth"/"$repo"/releases/download/2023.5.0/cloudflared-linux-arm"
     # SSH arguments
-    set ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
+    local ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
 
     parse_arg "$@"          # Get data from user.
     test_conn               # Exit if no connection.
@@ -25,19 +25,19 @@ main() {
 # Define command-line arguments, prompt user for ip and token, validate inputs.
 parse_arg() {
     if [ -n "$1" ]] ; then ip_addr=$1 ; fi
-    set valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+    local valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     while ! echo "$ip_addr" | grep -Eq "$valid_ip" ; do
         read -p "Enter IP address: " ip_addr ; done
 
     if [ -n "$2" ] ; then token=$2 ; fi
-    set valid_token="^[a-zA-Z0-9]+$"
+    local valid_token="^[a-zA-Z0-9]+$"
     while ! echo "$token" | grep -Eq "$valid_token" ; do
         read -p "Enter CFD Token: " token ; done
 }
 
 # Check to see if device and GitHub are responding.
 test_conn() {
-    if ! ping -c 1 $ip_addr &> /dev/null ; then
+    if ! ping -c 1 "$ip_addr" &> /dev/null ; then
         printf "\nERROR: No route to device!\nAre you behind a VPN or connected to the wrong network?\n"
         printf "Please ensure device connectivity and try again.\n\n" ; exit 1 ; fi
     if ! ping -c 1 github.com &> /dev/null ; then
@@ -47,9 +47,9 @@ test_conn() {
 
 # Query GH API for latest version number and download URL.
 parse_github() {
-    set api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
-    set latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
-    down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
+    local api_url="https://api.github.com/repos/"$auth"/"$repo"/releases/latest"
+    local latest=$(curl -sL "$api_url" | grep tag_name | awk -F \" '{print $4}')
+    down_url="https://github.com/"$auth"/"$repo"/releases/download/"$latest"/cloudflared-linux-arm"
     if [ -z "$latest" ] ; then
         printf "\nERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
         printf "Using alternate download URL.\n\n" ; down_url=$alt_url ; fi
@@ -57,7 +57,7 @@ parse_github() {
 
 # Detect the OS of the host, install dependencies.
 detect_os() {
-    set host=$(uname -o)
+    local host=$(uname -o)
     if [ "$host" = "Android" ] ; then
         if ! command -v pkg &> /dev/null ; then
             printf "\nERROR: This script must be run in Termux.\n\n" ; exit 1 ; fi
@@ -69,10 +69,10 @@ detect_os() {
 # Commands sent over SSH STDIN as a heredoc.
 ssh_install() {
 #==================== Start SSH connection ====================
-ssh root@$ip_addr $ssh_arg 2> /dev/null <<- ENDSSH
+ssh root@"$ip_addr" "$ssh_arg" 2> /dev/null <<- ENDSSH
 
 printf "\nDownloading cloudflared.\n\n"
-if ! curl -L $down_url -o cloudflared ; then
+if ! curl -L "$down_url" -o cloudflared ; then
     printf "ERROR: Download failed.\n"
     printf "Please ensure internet connectivity and try again.\n\n" ; exit 1 ; fi
 
@@ -90,7 +90,7 @@ START=95
 STOP=01
 
 cfd_init="/etc/init.d/cloudflared"
-cfd_token="$token"
+cfd_token=""$token""
 
 boot() {
     ubus -t 30 wait_for network.interface network.loopback 2>/dev/null
