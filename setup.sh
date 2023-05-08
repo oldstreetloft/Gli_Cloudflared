@@ -4,15 +4,15 @@
 # Main function is executed at the bottom of the script so that an incomplete download will run nothing
 main() {
     # Parse arguments    
-    local ip_addr=''
-    local token=''
+    set ip_addr=''
+    set token=''
     # Parse GitHub
-    local down_url=''
-    local auth="cloudflare"
-    local repo="cloudflared"
-    local alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
+    set down_url=''
+    set auth="cloudflare"
+    set repo="cloudflared"
+    set alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
     # SSH arguments
-    local ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
+    set ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
 
     parse_arg "$@"          # Get data from user.
     test_conn               # Exit if no connection.
@@ -25,12 +25,12 @@ main() {
 # Define command-line arguments, prompt user for ip and token, validate inputs.
 parse_arg() {
     if [ -n "$1" ]] ; then ip_addr=$1 ; fi
-    local valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+    set valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     while ! echo "$ip_addr" | grep -Eq "$valid_ip" ; do
         read -p "Enter IP address: " ip_addr ; done
 
     if [ -n "$2" ] ; then token=$2 ; fi
-    local valid_token="^[a-zA-Z0-9]+$"
+    set valid_token="^[a-zA-Z0-9]+$"
     while ! echo "$token" | grep -Eq "$valid_token" ; do
         read -p "Enter CFD Token: " token ; done
 }
@@ -47,8 +47,8 @@ test_conn() {
 
 # Query GH API for latest version number and download URL.
 parse_github() {
-    local api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
-    local latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
+    set api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
+    set latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
     down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
     if [ -z "$latest" ] ; then
         printf "\nERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
@@ -57,7 +57,7 @@ parse_github() {
 
 # Detect the OS of the host, install dependencies.
 detect_os() {
-    local host=$(uname -o)
+    set host=$(uname -o)
     if [ "$host" = "Android" ] ; then
         if ! command -v pkg &> /dev/null ; then
             printf "\nERROR: This script must be run in Termux.\n\n" ; exit 1 ; fi
