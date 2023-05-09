@@ -3,11 +3,9 @@
 #======================================== Main function ========================================
 # Main function is executed from the end of the script.
 main() {
-    # Parse GitHub
     auth="cloudflare"
     repo="cloudflared"
     alt_url="https://github.com/$auth/$repo/releases/download/2023.5.0/cloudflared-linux-arm"
-    # SSH arguments
     ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
 
     parse_arg "$@"                      # Get data from user.
