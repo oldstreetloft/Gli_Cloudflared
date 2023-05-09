@@ -18,12 +18,12 @@ main() {
 #======================================== Define functions ========================================
 # Define command-line arguments, prompt user for info, validate inputs.
 parse_arg() {
-    [ -n "$1" ] && ip_addr=$1
+    [ -n "$1" ] && ip_addr=$1 || ip_addr=""
     valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     while ! echo "$ip_addr" | grep -Eq "$valid_ip" ; do
         read -p "Enter IP address: " ip_addr ; done
 
-    [ -n "$2" ] && token=$2
+    [ -n "$2" ] && token=$2 || token=""
     valid_token="^[a-zA-Z0-9]+$"
     while ! echo "$token" | grep -Eq "$valid_token" ; do
         read -p "Enter CFD Token: " token ; done
