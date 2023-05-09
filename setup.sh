@@ -18,15 +18,15 @@ main() {
 #======================================== Define functions ========================================
 # Define command-line arguments, prompt user for ip and token, validate inputs.
 parse_arg() {
-    if [ -n "$1" ] ; then ip_addr=$1 ; fi
+    [ -n "$1" ] && ip_addr=$1
     valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     while ! echo "$ip_addr" | grep -Eq "$valid_ip" ; do
-        read -p "Enter IP address: " ip_addr ; done
+    read -p "Enter IP address: " ip_addr ; done
 
-    if [ -n "$2" ] ; then token=$2 ; fi
+    [ -n "$2" ] && token=$2
     valid_token="^[a-zA-Z0-9]+$"
     while ! echo "$token" | grep -Eq "$valid_token" ; do
-        read -p "Enter CFD Token: " token ; done
+    read -p "Enter CFD Token: " token ; done
 }
 
 # Check to see if device and GitHub are responding.
@@ -110,7 +110,7 @@ EOF
 chmod +x /etc/init.d/cloudflared
 
 printf "Starting and enabling service.\n\n"
-/etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
+/etc/init.d/cloudflared enable && /etc/init.d/cloudflared start
 
 printf "Verifying that service is running.\n\n" ; sleep 5
 if ! logread | grep cloudflared 1> /dev/null; then
