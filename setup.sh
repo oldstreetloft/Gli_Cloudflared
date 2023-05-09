@@ -16,7 +16,7 @@ main() {
 }
 
 #======================================== Define functions ========================================
-# Define command-line arguments, prompt user for ip and token, validate inputs.
+# Define command-line arguments, prompt user for info, validate inputs.
 parse_arg() {
     [ -n "$1" ] && ip_addr=$1
     valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
