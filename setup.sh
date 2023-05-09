@@ -21,18 +21,18 @@ parse_arg() {
     [ -n "$1" ] && ip_addr=$1
     valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
     while ! echo "$ip_addr" | grep -Eq "$valid_ip" ; do
-    read -p "Enter IP address: " ip_addr ; done
+        read -p "Enter IP address: " ip_addr ; done
 
     [ -n "$2" ] && token=$2
     valid_token="^[a-zA-Z0-9]+$"
     while ! echo "$token" | grep -Eq "$valid_token" ; do
-    read -p "Enter CFD Token: " token ; done
+        read -p "Enter CFD Token: " token ; done
 }
 
 # Check to see if device and GitHub are responding.
 test_conn() {
-    ! ping -c 1 "$ip_addr" 1> /dev/null && printf "\nERROR: No route to device!\n\n" ; exit 1
-    ! ping -c 1 github.com 1> /dev/null && printf "\nERROR: No internet connection.\n\n" ; exit 1
+    ! ping -c 1 "$ip_addr" 1> /dev/null && printf "\nERROR: No route to device!\n\n" && exit 1
+    ! ping -c 1 github.com 1> /dev/null && printf "\nERROR: No internet connection.\n\n" && exit 1
 }
 
 # Query GH API for latest version number and download URL.
@@ -48,14 +48,14 @@ detect_os() {
     host=$(uname -o)
     case "$host" in
         "Android")
-            ! command -v pkg 1> /dev/null && printf "\nERROR: Termux required.\n\n" ; exit 1
+            ! command -v pkg 1> /dev/null && printf "\nERROR: Termux required.\n\n" && exit 1
             ! command -v ssh 1> /dev/null && pkg update && pkg install openssh ;; esac
 }
 
 # Commands sent over SSH STDIN as a heredoc.
 ssh_install() {
 #======================================== Start SSH connection ========================================
-ssh root@"$ip_addr" "$ssh_arg" 2> /dev/null <<- ENDSSH
+ssh root@$ip_addr $ssh_arg 2> /dev/null <<- ENDSSH
 
 printf "\nDownloading cloudflared.\n\n"
 ! curl -sL $down_url -o cloudflared && printf "ERROR: Download failed.\n\n" && exit 1
@@ -103,7 +103,7 @@ printf "Starting and enabling service.\n\n"
 /etc/init.d/cloudflared enable && /etc/init.d/cloudflared start
 
 printf "Verifying that service is running.\n\n" ; sleep 5
-! logread | grep cloudflared 1> /dev/null && printf "ERROR: INSTALL FAILED!\n\n" ; exit 1
+! logread | grep cloudflared 1> /dev/null && printf "ERROR: INSTALL FAILED!\n\n" && exit 1
 
 printf "SUCCESS: INSTALL COMPLETED.\n\n"
 printf "Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n"
