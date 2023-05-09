@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #==================== Main function ====================
 # Main function is executed from the end of the script so incomplete downloads dont fuck shit up.
