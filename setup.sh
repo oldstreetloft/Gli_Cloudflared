@@ -68,7 +68,7 @@ ssh_install() {
 ssh root@"$ip_addr" "$ssh_arg" 2> /dev/null <<- ENDSSH
 
 printf "\nDownloading cloudflared.\n\n"
-if ! curl -L $down_url -o cloudflared ; then
+if ! curl -sL $down_url -o cloudflared ; then
     printf "ERROR: Download failed.\n"
     printf "Please ensure internet connectivity and try again.\n\n" ; exit 1 ; fi
 
