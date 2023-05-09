@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#==================== Main function ====================
+#======================================== Main function ========================================
 # Main function is executed from the end of the script so incomplete downloads dont fuck shit up.
 main() {
     # Parse GitHub
@@ -10,14 +10,14 @@ main() {
     # SSH arguments
     ssh_arg="-oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-rsa"
 
-    parse_arg "$@"              # Get data from user.
-    test_conn                   # Exit if no connection.
-    parse_github                # Query GH for download URL.
-    detect_os                   # Install dependencies.
-    ssh_install                 # Install script.
+    parse_arg "$@"                      # Get data from user.
+    test_conn                           # Exit if no connection.
+    parse_github                        # Query GH for download URL.
+    detect_os                           # Install dependencies.
+    ssh_install                         # Install script.
 }
 
-#==================== Define functions ====================
+#======================================== Define functions ========================================
 # Define command-line arguments, prompt user for ip and token, validate inputs.
 parse_arg() {
     if [ -n "$1" ] ; then ip_addr=$1 ; fi
@@ -64,7 +64,7 @@ detect_os() {
 
 # Commands sent over SSH STDIN as a heredoc.
 ssh_install() {
-#==================== Start SSH connection ====================
+#======================================== Start SSH connection ========================================
 ssh root@"$ip_addr" "$ssh_arg" 2> /dev/null <<- ENDSSH
 
 printf "\nDownloading cloudflared.\n\n"
@@ -74,10 +74,9 @@ if ! curl -L $down_url -o cloudflared ; then
 
 printf "Installing cloudflared.\n\n"
 chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared
-printf "Package installed.\n\n"
 
 printf "Writing init config.\n\n"
-#==================== Start init config ====================
+#======================================== Start init config ========================================
 cat > /etc/init.d/cloudflared <<- EOF
 #!/bin/sh /etc/rc.common
 
@@ -109,12 +108,11 @@ stop_service() {
     pidof cloudflared && kill -SIGINT \\\`pidof cloudflared\\\`
 }
 EOF
-#==================== End init config ====================
+#======================================== End init config ========================================
 chmod +x /etc/init.d/cloudflared
 
 printf "Starting and enabling service.\n\n"
-/etc/init.d/cloudflared enable
-/etc/init.d/cloudflared start
+/etc/init.d/cloudflared enable ; /etc/init.d/cloudflared start
 
 printf "Verifying that service is running.\n\n" ; sleep 5
 if ! logread | grep cloudflared 1> /dev/null; then
@@ -123,8 +121,8 @@ if ! logread | grep cloudflared 1> /dev/null; then
 printf "SUCCESS: INSTALL COMPLETED.\n\n"
 printf "Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n"
 ENDSSH
-#==================== End SSH connection ====================
+#======================================== End SSH connection ========================================
 }
 
-#==================== Start execution ====================
+#======================================== Start execution ========================================
 main "$@"
