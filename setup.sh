@@ -31,12 +31,8 @@ parse_arg() {
 
 # Check to see if device and GitHub are responding.
 test_conn() {
-    if ! ping -c 1 "$ip_addr" 1> /dev/null ; then
-        printf "\nERROR: No route to device!\nAre you behind a VPN or connected to the wrong network?\n"
-        printf "Please ensure device connectivity and try again.\n\n" ; exit 1 ; fi
-    if ! ping -c 1 github.com 1> /dev/null ; then
-        printf "\nERROR: You are NOT connected to the internet.\n"
-        printf "Please ensure internet connectivity and try again.\n\n" ; exit 1 ; fi
+    ! ping -c 1 "$ip_addr" 1> /dev/null && printf "\nERROR: No route to device!\n\n" ; exit 1
+    ! ping -c 1 github.com 1> /dev/null && printf "\nERROR: No internet connection.\n\n" ; exit 1
 }
 
 # Query GH API for latest version number and download URL.
@@ -44,20 +40,16 @@ parse_github() {
     api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
     down_url="https://github.com/$auth/$repo/releases/download/$latest/cloudflared-linux-arm"
-    if [ -z "$latest" ] ; then
-        printf "\nERROR: Unable to retrieve latest download URL from GitHub API.\n\n"
-        printf "Using alternate download URL.\n\n" ; down_url=$alt_url ; fi
+    [ -z "$latest" ] && down_url=$alt_url && printf "\nUsing fallback URL.\n\n"
 }
 
 # Detect the OS of the host, install dependencies.
 detect_os() {
     host=$(uname -o)
-    if [ "$host" = "Android" ] ; then
-        if ! command -v pkg 1> /dev/null ; then
-            printf "\nERROR: This script must be run in Termux.\n\n" ; exit 1 ; fi
-        if ! command -v ssh 1> /dev/null ; then
-            printf "\nUpdating package list.\n\n" ; pkg update 1> /dev/null
-            printf "\nInstalling openssh.\n\n" ; pkg install openssh 1> /dev/null ; fi ;fi
+    case "$host" in
+        "Android")
+            ! command -v pkg 1> /dev/null && printf "\nERROR: Termux required.\n\n" ; exit 1
+            ! command -v ssh 1> /dev/null && pkg update && pkg install openssh ;; esac
 }
 
 # Commands sent over SSH STDIN as a heredoc.
@@ -66,12 +58,10 @@ ssh_install() {
 ssh root@"$ip_addr" "$ssh_arg" 2> /dev/null <<- ENDSSH
 
 printf "\nDownloading cloudflared.\n\n"
-if ! curl -sL $down_url -o cloudflared ; then
-    printf "ERROR: Download failed.\n"
-    printf "Please ensure internet connectivity and try again.\n\n" ; exit 1 ; fi
+! curl -sL $down_url -o cloudflared && printf "ERROR: Download failed.\n\n" && exit 1
 
 printf "Installing cloudflared.\n\n"
-chmod +x cloudflared ; mv cloudflared /usr/bin/cloudflared
+chmod +x cloudflared && mv cloudflared /usr/bin/cloudflared
 
 printf "Writing init config.\n\n"
 #======================================== Start init config ========================================
@@ -113,8 +103,7 @@ printf "Starting and enabling service.\n\n"
 /etc/init.d/cloudflared enable && /etc/init.d/cloudflared start
 
 printf "Verifying that service is running.\n\n" ; sleep 5
-if ! logread | grep cloudflared 1> /dev/null; then
-    printf "ERROR: INSTALL FAILED!\n\n" ; exit 1 ; fi
+! logread | grep cloudflared 1> /dev/null && printf "ERROR: INSTALL FAILED!\n\n" ; exit 1
 
 printf "SUCCESS: INSTALL COMPLETED.\n\n"
 printf "Set split tunnel in Cloudflare Zero Trust portal under Settings -> Warp App.\n\n"
