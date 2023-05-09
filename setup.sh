@@ -58,8 +58,8 @@ detect_os() {
         if ! command -v pkg 1> /dev/null ; then
             printf "\nERROR: This script must be run in Termux.\n\n" ; exit 1 ; fi
         if ! command -v ssh 1> /dev/null ; then
-            pkg update 1> /dev/null
-            pkg install openssh 1> /dev/null ; fi ; fi
+            printf "\nUpdating package list.\n\n" ; pkg update 1> /dev/null
+            printf "\nInstalling openssh.\n\n" ; pkg install openssh 1> /dev/null ; fi ;fi
 }
 
 # Commands sent over SSH STDIN as a heredoc.
