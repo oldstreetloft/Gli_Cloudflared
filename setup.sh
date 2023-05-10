@@ -18,15 +18,25 @@ main() {
 #======================================== Define functions ========================================
 # Define command-line arguments, prompt user for info, validate inputs.
 parse_arg() {
-    [ -n "$1" ] && ip_addr=$1 || ip_addr=""
-    valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
-    while ! echo "$ip_addr" | grep -Eq "$valid_ip" ; do
+    is_valid_ip $1 && ip_addr=$1 || ip_addr=""
+    while ! is_valid_ip $ip_addr ; do
         read -p "Enter IP address: " ip_addr ; done
 
-    [ -n "$2" ] && token=$2 || token=""
-    valid_token="^[a-zA-Z0-9]+$"
-    while ! echo "$token" | grep -Eq "$valid_token" ; do
+    is_valid_token $2 && token=$2 || token=""
+    while ! is_valid_token $token ; do
         read -p "Enter CFD Token: " token ; done
+}
+
+# Validate IP address
+is_valid_ip() {
+    valid_ip="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+    echo "$1" | grep -Eq "$valid_ip" && return 0 || return 1
+}
+
+# Validate Cloudflare access token
+is_valid_token() {
+    valid_token="^[a-zA-Z0-9]+$"
+    echo "$token" | grep -Eq "$valid_token" && return 0 || return 1
 }
 
 # Check to see if device and GitHub are responding.
