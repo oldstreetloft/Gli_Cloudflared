@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #======================================== Main function ========================================
-# Main function is executed from the end of the script.
+# Main function executed from EOF.
 main() {
     auth="cloudflare"
     repo="cloudflared"
@@ -16,7 +16,7 @@ main() {
 }
 
 #======================================== Define functions ========================================
-# Define command-line arguments, prompt user for info, validate inputs.
+# If no/invalid argument, prompt user.
 parse_arg() {
     is_valid_ip $1 && ip_addr=$1 || ip_addr=""
     while ! is_valid_ip $ip_addr ; do
@@ -33,19 +33,19 @@ is_valid_ip() {
     echo "$1" | grep -Eq "$valid_ip" && return 0 || return 1
 }
 
-# Validate Cloudflare access token
+# Validate token
 is_valid_token() {
     valid_token="^[a-zA-Z0-9]+$"
-    echo "$token" | grep -Eq "$valid_token" && return 0 || return 1
+    echo "$1" | grep -Eq "$valid_token" && return 0 || return 1
 }
 
-# Check to see if device and GitHub are responding.
+# Check if device and GH respond.
 test_conn() {
     ! ping -c 1 "$ip_addr" 1> /dev/null && printf "\nERROR: No route to device!\n\n" && exit 1
     ! ping -c 1 github.com 1> /dev/null && printf "\nERROR: No internet connection.\n\n" && exit 1
 }
 
-# Query GH API for latest version number and download URL.
+# Query GH API for latest version and URL.
 parse_github() {
     api_url="https://api.github.com/repos/$auth/$repo/releases/latest"
     latest=$(curl -sL $api_url | grep tag_name | awk -F \" '{print $4}')
@@ -53,7 +53,7 @@ parse_github() {
     [ -z "$latest" ] && down_url=$alt_url && printf "\nUsing fallback URL.\n\n"
 }
 
-# Detect the OS of the host, install dependencies.
+# Detect OS of host. Install dependencies.
 detect_os() {
     host=$(uname -o)
     case "$host" in
@@ -62,7 +62,7 @@ detect_os() {
             ! command -v ssh 1> /dev/null && pkg update && pkg install openssh ;; esac
 }
 
-# Commands sent over SSH STDIN as a heredoc.
+# Commands sent over SSH STDIN via heredoc.
 ssh_install() {
 #======================================== Start SSH connection ========================================
 ssh root@$ip_addr $ssh_arg 2> /dev/null <<- ENDSSH
