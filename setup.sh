@@ -18,12 +18,12 @@ main() {
 #======================================== Define functions ========================================
 # If no/invalid argument, prompt user.
 parse_arg() {
-    is_valid_ip $1 && ip_addr=$1 || ip_addr=""
-    while ! is_valid_ip $ip_addr ; do
+    is_valid_ip "$1" && ip_addr="$1" || ip_addr=""
+    while ! is_valid_ip "$ip_addr" ; do
         read -p "Enter IP address: " ip_addr ; done
 
-    is_valid_token $2 && token=$2 || token=""
-    while ! is_valid_token $token ; do
+    is_valid_token "$2" && token="$2" || token=""
+    while ! is_valid_token "$token" ; do
         read -p "Enter CFD Token: " token ; done
 }
 
@@ -65,7 +65,7 @@ detect_os() {
 # Commands sent over SSH STDIN via heredoc.
 ssh_install() {
 #======================================== Start SSH connection ========================================
-ssh root@$ip_addr $ssh_arg 2> /dev/null <<- ENDSSH
+ssh root@"$ip_addr" "$ssh_arg" 2> /dev/null <<- ENDSSH
 
 printf "\nDownloading cloudflared.\n\n"
 ! curl -sL $down_url -o cloudflared && printf "ERROR: Download failed.\n\n" && exit 1
