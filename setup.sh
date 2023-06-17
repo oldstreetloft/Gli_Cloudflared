@@ -65,7 +65,7 @@ detect_os() {
 # Commands sent over SSH STDIN via heredoc.
 ssh_install() {
 #======================================== Start SSH connection ========================================
-ssh root@"$ip_addr" "$ssh_arg" 2> /dev/null <<- ENDSSH
+ssh root@$ip_addr $ssh_arg 2> /dev/null <<- ENDSSH
 
 printf "\nDownloading cloudflared.\n\n"
 ! curl -sL $down_url -o cloudflared && printf "ERROR: Download failed.\n\n" && exit 1
